@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- <meta http-equiv="Cache-Control" content="max-age=28800000" /> -->
+    <style>
+      span{
+        cursor: pointer;
+      }
+      .nav-tabs li a{
+        font-size: 20px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="">
+      <section class="content-header">
+        <div class="row">
+          <div class="col-xs-1 com-lg-1">
+            <button class="btn btn-tool btn-lg" id="return"><i class="fa fa-mail-reply"></i></button>
+          </div>
+          <div class="col-xs-8 col-lg-10">
+            <h2>威胁预警历史记录</h2>
+          </div>
+          <div class="col-xs-1 col-lg-1">
+            <button class="btn btn-tool btn-lg" onclick="in_route('warn_risk')"><i class="fa fa-refresh"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- left col-->
+          <div class="col-md-12">
+            <!-- Custom Tabs -->
+            <div class="nav-tabs-custom">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">历史记录列表</a></li>
+                <li><a href="#tab_2" data-toggle="tab">已忽略列表</a></li>
+                <!-- <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                  <div class="tab-content tab-hight1">
+                    <table id="address" class="table table-bordered table-striped table_height"></table>
+                  </div>
+                </div><!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+                  <table class="table table-bordered table-striped table_height" id="user_set">
+
+                  </table>
+                </div><!-- /.tab-pane -->
+              </div><!-- /.tab-content -->
+            </div><!-- nav-tabs-custom -->
+          </div><!-- /.col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+
+  </body>
+  <script>
+
+
+    $.ajax({
+      type: "GET",
+      url: "/proj/threat_warning_history/",
+      dataType: "json",
+      success: function(res) {
+          var b = ["", "", "","", "", "",""];
+          arr = res.data
+
+          fill(arr, 10, b);
+          var address = $('#address').DataTable({
+              data: arr,
+              ordering: false,
+              columns: [
+                  {title: " "},
+                  {title: "时间"},
+                  {title: "攻击类型"},
+                  {title: "被攻击"},
+                  {title: "攻击"},
+                  {title: "次数"},
+                   {title: " "},
+              ],
+              oLanguage: {
+                  "sProcessing": "正在加载中......",
+                  "sLengthMenu": "每页显示 _MENU_ 条记录",
+                  "sZeroRecords": "没有数据！",
+                  "sEmptyTable": "表中无数据存在！",
+                  "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                  "sInfoEmpty": "显示0到0条记录",
+                  "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                  "sSearch": "搜索",
+                  "oPaginate": {
+                      "sFirst": "首页",
+                      "sPrevious": "上一页",
+                      "sNext": "下一页",
+                      "sLast": "末页"
+                  }
+              }
+          });
+
+          var b1 = ["", "", "", "", "", "", "", ""];
+          arr1 = res.ignore_data
+          fill(arr1, 10, b1);
+          var user_set = $('#user_set').DataTable({
+              data: arr1,
+              ordering: false,
+              columns: [
+                  {title: " "},
+                  {title: "时间"},
+                  {title: "攻击类型"},
+                  {title: "被攻击"},
+                  {title: "攻击"},
+                  {title: "端口"},
+                   {title: ""},
+                   {title: ""},
+              ],
+              oLanguage: {
+                  "sProcessing": "正在加载中......",
+                  "sLengthMenu": "每页显示 _MENU_ 条记录",
+                  "sZeroRecords": "没有数据！",
+                  "sEmptyTable": "表中无数据存在！",
+                  "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                  "sInfoEmpty": "显示0到0条记录",
+                  "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                  "sSearch": "搜索",
+                  "oPaginate": {
+                      "sFirst": "首页",
+                      "sPrevious": "上一页",
+                      "sNext": "下一页",
+                      "sLast": "末页"
+                  }
+              }
+          });
+
+      }
+
+    })
+
+
+    // var parames_s=["scanning"];
+     // 返回上一页
+     $("#return").click(function(event) {
+        in_route("warning", "");
+    })
+
+    function re_ignore(eid) {
+        console.log(eid)
+        $.ajax({
+            url: "/proj/user_event_reignore/?eid=" + eid,
+            type: "get",
+            dataType: "html",
+            //data: q,
+            success: function (msg) {
+                //console.log(msg)
+
+                // 重新进入这个页面
+                in_route("warn_risk", "");
+            }
+        })
+
+    }
+
+
+
+  </script>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- <meta http-equiv="Cache-Control" content="max-age=7200" /> -->
+    <!-- <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css"> -->
+    <link rel="stylesheet" href="/static/proj/dist/css/monitor.css">
+    <style>
+      td{
+       cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+     <div class="">
+      <!-- Main content -->
+      <section class="content monitor">
+        <!-- Main row -->
+        <div class="row">
+          <!-- Left col -->
+             <section class="col-lg-8 connectedSortable topout">
+              {% include 'proj/pages/own_add/jtopo.html' %}
+             {% include 'proj/pages/own_add/modal.html' %}
+          </section><!-- /.Left col -->
+          <!-- right col -->
+          <section class="col-lg-4 connectedSortable no-padding-left">
+            <!-- 24小时数据 -->
+            <div class="border-color" style="margin-bottom:5px;">
+              <!-- <p class="p-color background-color p-title1 border-bottom1">24小时安全统计</p> -->
+              <div class="row">
+                <div class="col-xs-6 col-lg-3 border-right no-padding-right">
+                  <p class="p-color background-color p-title1">泄漏监测</p>
+                  <div class="col-height">
+                    <p class="p-color p-content3">已拦截</p>
+                    <p class="p-color p-content2">0</p>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-lg-9 no-padding-left">
+                  <p class="p-color background-color p-title1">威胁预警</p>
+                  <div class="row">
+                    <div class="col-xs-6 col-lg-4 border-right no-padding-right no-padding-left">
+                      <div class="col-height">
+                        <p class="p-color p-content3">预警结果</p>
+                        <p class="p-color p-content2">0</p>
+                      </div>
+                    </div>
+                    <div class="col-xs-6 col-lg-4 border-right no-padding-right no-padding-left">
+                      <div class="col-height">
+                        <p class="p-color p-content3">网页篡改</p>
+                        <p class="p-color p-content2">0</p>
+                      </div>
+                    </div>
+                    <div class="col-xs-6 col-lg-4 no-padding-right no-padding-left">
+                      <div class="col-height">
+                        <p class="p-color p-content3">敏感数据</p>
+                        <p class="p-color p-content2">0</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-sm-6">
+                <!-- 巡检结果 -->
+                <div class="border-color">
+                  <p class="p-color background-color p-title1">智能巡检详情</p>
+                  <div class="row">
+                    <div class="col-lg-3 col-sm-3">
+                      <p class="p-color p-normal">最近巡检：</p>
+                    </div>
+                    <div class="col-lg-7 col-sm-7">
+                      <p class="span-font" id="scen">2017.11.22 11:00</p>
+                    </div>
+                    <div class="col-lg-2 col-sm-2">
+                      <button class="btn btn-outline pull-right btn-top" id="more">更多</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3  col-sm-3">
+                      <p class="p-color p-normal ">巡检任务：</p>
+                    </div>
+                    <div class="col-lg-7 col-sm-8">
+                      <div class="progress pro-out-color">
+                        <div class="progress-bar progress-bar-success progress-color" id="bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
+                            <span class="" id="bar_text">100% 完成</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3  col-sm-3">
+                      <p class="p-color p-normal ">巡检结果：</p>
+                    </div>
+                    <div class="col-lg-7 col-sm-8">
+                      <p class="span-font"><span id="all">12</span>个高危漏洞</p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-sm-3">
+                      <p class="p-color p-normal ">巡检处置：</p>
+                    </div>
+                    <div class="col-lg-7 col-sm-7">
+                      <ul class="todo-list">
+                        <li>
+                          <small class="label label-danger" name="gaowei"><i class="fa fa-clock-o"></i>未处理</small>
+                          <span class="text span-font" id="disposal1">12</span>
+                        </li>
+                        <li>
+                          <small class="label label-warning" name="gaowei"><i class="fa fa-clock-o i-width"></i>忽略</small>
+                          <span class="text span-font" id="disposal2">1</span>
+                        </li>
+                        <li>
+                          <small class="label label-success" name="gaowei"><i class="fa fa-clock-o"></i>已处理</small>
+                          <span class="text span-font" id="disposal3">11</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <p class="p-color p-normal border-top"><i class="fa fa-clock-o"></i>巡检倒计时：<span class="span-font" id="showDiv"></span></p>
+                </div>
+             <!-- 详情 -->
+                <div class="border-bg co-left" style="margin-top:5px;">
+                  <p class="p-color p-title3"><i class="fa fa-arrow-right"></i><span id="locate_area">当前区域情况-总览</span></p>
+                  <div class="row">
+                    <div class="col-lg-3 col-sm-3">
+                      <p class="p-color p-normal "></p>
+                    </div>
+                    <div class="col-lg-7 col-sm-7">
+                      <ul class="todo-list1">
+                        <li>
+                          <!-- <small class="label label-danger"><i class="fa fa-clock-o"></i>未处理</small> -->
+                          <span class="text span-font" id="disposal4">2</span>台主机告警
+                        </li>
+                        <li>
+                          <!-- <small class="label label-warning"><i class="fa fa-clock-o i-width"></i>忽略</small> -->
+                          <span class="text span-font" id="disposal5">1</span>个安全隐患
+                        </li>
+                        <li>
+                          <!-- <small class="label label-success"><i class="fa fa-clock-o"></i>已处理</small> -->
+                          <span class="text span-font" id="disposal6">2</span>个攻击威胁
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+          </section><!-- right col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+    <script src="/static/jtopot/own_jtopo//local_index.js"></script>
+    <script src="/static/jtopot/own_jtopo/local_page_zl.js"></script>
+  </body>
+  <script>
+//    $.ajax({
+//        url: "http://192.168.0.103:90/task/scantask?task_type=1",
+//        type:"get",
+//        dataType:"json",
+//        // data: q,
+//        success:function(data){
+//          var str = eval(data.results);
+//          //console.log(str);
+//          $("#scen").text(str[0][1]);
+//          $("#bar").css("width",str[0][2]+"%");
+//          $("#bar_text").text(str[0][2]+"% 完成")
+//          $("#all").text(str[0][3]);
+//          $("#disposal1").text(str[0][4][0]);
+//          $("#disposal2").text(str[0][4][1]);
+//          $("#disposal3").text(str[0][4][2]);
+//          var result_data=formatSeconds(str[1]);
+//          down(result_data);
+//
+//      }
+//    })
+
+    // 进度条
+    var timecount=setInterval("bar()",100000);
+//    function bar(){
+//      $.ajax({
+//          url: "http://192.168.0.103:90/task/scantask?task_type=1",
+//          type:"get",
+//          dataType:"json",
+//          success:function(data){
+//            var str = eval(data.results);
+//            $("#bar").css("width",str[0][2]+"%");
+//            $("#bar_text").text(str[0][2]+"% 完成")
+//        }
+//      })
+//    }
+
+
+      //倒计时
+      var h;
+      var m;
+      var s;
+      var showDiv;
+      var timecount;
+      function down(){
+        window.clearInterval(timecount);
+        showDiv=document.getElementById("showDiv");
+              h=11;
+              m=33;
+              s=55;
+        if(s==0 & m==0 & h==0){
+          showDiv.innerHTML="00:00:00";
+        }else{
+          timecount=setInterval("countdown()",1000);
+        }
+
+      }
+
+      down()
+
+        //进行倒计时显示
+        function countdown(){
+            --s;
+            if(s<0){
+                --m;
+                s=59;
+            }
+            if(m<0){
+                --h;
+                m=59
+            }
+            if(h<0){
+                s=0;
+                m=0;
+            }
+            showDiv.innerHTML=checkTime(h)+":"+checkTime(m)+":"+checkTime(s);
+        }
+
+
+        function checkTime(i){ //将0-9的数字前面加上0，例1变为01
+           if(i<10)
+           {
+            i = "0" + i;
+           }
+           return i;
+          }
+
+
+
+  // 详情
+  var parames_r=["scanning"]
+  $("#more").click(function(event) {
+      in_route("scanning",parames_r);
+  });
+  $("small[name=gaowei]").click(function(event) {
+      in_route("scanning",parames_r)
+  });
+
+  // 攻击威胁
+  var parames_list=["warning"]
+  $("#gongjiweix").click(function(event) {
+      in_route("warning",parames_list)
+    });
+
+  // 高危
+  var parames=["monitor"]
+  $("table tr td").click(function(){
+      console.log("点击过！！！！！！！！！！！！！！！！！！！！！！！！！！")
+    in_route("warningdetail", parames);
+  })
+  </script>
+</html>

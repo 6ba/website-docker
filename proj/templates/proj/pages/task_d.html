@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <style>
+      span{
+        cursor: pointer;
+      }
+      .tb-dis{
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="">
+      <section class="content-header">
+        <div class="row">
+          <div class="col-xs-1 com-lg-1">
+            <button class="btn btn-tool btn-lg" id="return" onclick="in_route(parames)" ><i class="fa fa-mail-reply"></i></button>
+          </div>
+          <div class="col-xs-8 col-lg-10">
+            <h2>扫描列表详情</h2>
+          </div>
+          <div class="col-xs-1 col-lg-1">
+            <button class="btn btn-tool btn-lg" id="refresh" onclick="in_route('task_d')"><i class="fa fa-refresh"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- left col-->
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                  <button id="add" class="btn btn-primary btn-sm pull-right"  style="margin-right: 5px;"><i class="fa fa-plus"></i></button>
+                </div><!-- /. tools -->
+                <h3 class="box-title">扫描任务列表记录</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body tab-hight">
+                <div class="tab-content" id="table_src">
+                  <table id="src" class="table table-bordered table-striped"></table>
+                </div>
+              </div><!-- /.box-body -->
+            </div><!-- /. box -->
+          </div><!-- /.col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+
+    <!-- 添加模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">增加任务</h4>
+                </div>
+                <div class="modal-body">
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label for="inputName" class="col-sm-2 control-label">任务描述</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="input1" placeholder="请输入任务描述">
+                      </div>
+                    </div>
+                    <!-- 时间 -->
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">时间</label>
+                      <div class="col-sm-10">
+                        <div class="col-sm-3" style="margin-top:6px;">
+                          <select class="form-control" id="hour_in">
+                            <option value="">---</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-3" style="margin-top:6px;">
+                          <select class="form-control" id="min_in">
+                            <option value="">---</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 次数 -->
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">执行</label>
+                      <div class="col-sm-10">
+                        <div class="col-sm-2" style="margin-top:6px;">
+                          <input type="radio" name="times" id="optionsRadios1" value="每天" checked style="margin-right:5px;">每天
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label"></label>
+                      <div class="col-sm-10">
+                        <div class="col-sm-2" style="margin-top:6px;">
+                          <input type="radio" name="times" id="optionsRadios2" value="每周" style="margin-right:5px;">每周
+                        </div>
+                        <div class="col-sm-3" style="margin-top:6px;">
+                          <select class="form-control" id="day_in">
+                            <option value="">---</option>
+                            <option value="星期一">星期一</option>
+                            <option value="星期二">星期二</option>
+                            <option value="星期三">星期三</option>
+                            <option value="星期四">星期四</option>
+                            <option value="星期五">星期五</option>
+                            <option value="星期六">星期六</option>
+                            <option value="星期日">星期日</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label"></label>
+                      <div class="col-sm-10">
+                        <div class="col-sm-2" style="margin-top:6px;">
+                          <input type="radio" name="times" id="optionsRadios3" value="每月" style="margin-right:5px;">每月
+                        </div>
+                        <div class="col-sm-3" style="margin-top:6px;">
+                          <select class="form-control" id="mouth_in">
+                            <option value="">---</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" id="add_sure">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+  </body>
+  <script>
+    $("#myModal").modal("hide");
+    // 扫描域列表
+    // var arr1=[
+    //         ["日常","星期一 8:03","<input name=\"my-checkbox\" type=\"checkbox\" class=\"switch-small\" checked />","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\" style=\"margin-left:20px;\"></i>","10"],
+    //         ["日常","每天 13:00","<input name=\"my-checkbox\" type=\"checkbox\" checked />","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\" style=\"margin-left:20px;\"></i>","20"],
+    //         ["日常","5日 15:00","<input name=\"my-checkbox\" type=\"checkbox\" checked />","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\" style=\"margin-left:20px;\"></i>","30"],
+    // ]
+    function task_info() {
+          $("#table_src").html('<table id="src" class="table table-bordered table-striped"></table>')
+          $.ajax({
+            type: "GET",
+            url: "/proj/vulner_task_lists/",
+            dataType: "json",
+            success: function (res) {
+                var table = $('#src').DataTable({
+                    ordering: false,
+                    autoWidth: false,
+                    info: true,
+                    data: res.res,
+                    columns: [
+                        {title: "任务描述"},
+                        {title: "任务"},
+                        {title: "启用"},
+                        {title: ""},
+                        {title: "", sClass: "tb-dis"}
+                    ],
+                    oLanguage: {
+                        "sProcessing": "正在加载中......",
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sZeroRecords": "没有数据！",
+                        "sEmptyTable": "表中无数据存在！",
+                        "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                        "sInfoEmpty": "显示0到0条记录",
+                        "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                        "sSearch": "搜索",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上一页",
+                            "sNext": "下一页",
+                            "sLast": "末页"
+                        }
+                    }
+                });
+                bs_button()
+
+
+                $("#src_paginate").click(function(event) {
+                  $("[name='my-checkbox']").bootstrapSwitch({ onSwitchChange:function(){
+                      bs_button();
+                      console.log('have_done_button_change')
+                  }});
+                });
+                // 监听 datatables 变化
+          }
+        })
+      }
+    task_info();
+
+
+  function bs_button() {
+      // 启用按钮
+        $("[name='my-checkbox']").bootstrapSwitch({ onSwitchChange:function(){
+          console.log('on-or-close-click-then-change!')
+                var eid = this.id
+                //console.log(this)
+                $.ajax({
+                  url: "/proj/update_task_checked/?task_checked="+eid,
+                  type:"get",
+                  dataType:"text",
+                  success:function(msg){
+                      //in_route("task_d", {})
+                       console.log("clicked_cjecked")
+                  }
+                })
+        } });
+    }
+
+    // 月设置下选框
+    for(var i=1;i<32;i++){
+      var co_mouth="<option value=\""+i+"\">"+i+"日</option>";
+      $("#mouth_in").append(co_mouth);
+    }
+
+    // 小时设置下选框
+    for(var i=1;i<25;i++){
+      var co_mouth="<option value=\""+i+"\">"+i+"时</option>";
+      $("#hour_in").append(co_mouth);
+    }
+
+    // 分钟设置下选框
+    for(var i=0;i<12;i++){
+      var co_mouth="<option value=\""+ i*5 +"\">"+checkTime(i*5)+"分</option>";
+      $("#min_in").append(co_mouth);
+    }
+
+    // 每天 每周 每月 radio监听
+    $("input[name=times]").change(function(){
+      if($("input[name=times]").val()=="每天"){
+        $("#mouth_in").val("");
+        $("#day_in").val("");
+      }else if($("input[name=times]").val()=="每周"){
+        $("#day_in").val("");
+      }else if($("input[name=times]").val()=="每月"){
+        $("#mouth_in").val("");
+      }
+    });
+
+    // 添加
+    $("#add").click(function(event) {
+      $("#myModal").modal("show");
+      $("#myModalLabel").text("增加任务");
+        //var click_flag = 0
+         click_add(0)
+    })
+
+
+      function delete_task_by_id(task_id) {
+          var msg = "您真的确定要删除吗？";
+               if (confirm(msg)==true){
+                   $.ajax({
+                      url: "/proj/delete_task_by_id/?task_id="+task_id,
+                      type:"get",
+                      dataType:"text",
+                      success:function(msg){
+                          task_info()
+                    }
+                  })
+               }
+      }
+
+      function modify_task_by_id(task_id) {
+          $.ajax({
+            type: "GET",
+            url: "/proj/modify_task_by_id/?task_id="+task_id,
+            dataType: "json",
+            success: function (data) {
+              $("#input1").val(data["task_desc"]);
+              $("#hour_in").val(data["hour"]);
+              $("#min_in").val(data["minute"]);
+              $("#day_in").val(data["week_day"]);
+              $("#day_in").val(data["month_day"]);
+              $("input[name=times]:checked").val(data['checked']);
+              // 数据到位; 开始显示框框
+              $("#myModal").modal("show");
+              $("#myModalLabel").text("修改任务");
+              // 只显示一个案例
+              click_add(0)
+            }
+        })
+      }
+      // 后台接口完成=============================
+
+    $("#myModal").modal("hide");
+
+   //// 返回上一页
+   $("#return").click(function(event) {
+      in_route("scanning", {});
+  })
+
+    //刷新页面
+    $("#refresh").click(function(event) {
+      in_route("task_d", {});
+    });
+
+   // 提交的方法
+   function click_add(click_flag) {
+       $("#add_sure").click(function (event) {
+          //////console.log(event)
+          // 增加任务
+          $("#myModal").modal("hide");
+          if (click_flag == 0){
+              click_flag = 1
+            $.ajax({
+            type: "POST",
+            url: "/proj/add_task_to_cruiser/",
+            data:{
+              "task_desc": $("#input1").val(),
+              "hour": $("#hour_in").val(),
+                "minute":$("#min_in").val(),
+                "checked": $("input[name=times]:checked").val(),
+                "week_day": $("#day_in").val(),
+                "month_day": $("#mouth_in").val()
+            },
+            dataType: "text",
+            success: function (res) {
+              task_info();
+            }
+          })
+          }
+      })
+   }
+
+
+  </script>
+</html>

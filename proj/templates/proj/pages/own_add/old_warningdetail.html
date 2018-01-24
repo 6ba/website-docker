@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- <meta http-equiv="Cache-Control" content="max-age=7200" /> -->
+    <script src='/static/proj/dist/js/timeline.js'></script>
+    <link rel="stylesheet" href="/static/proj/dist/css/timeline.css">
+    <link rel="stylesheet" href="/static/proj/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <script src="/static/proj/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"></script>
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        z-index: 800;
+      }
+      .filling_line{
+        transform:scaleX(0.0);
+      }
+      .widget-user-header1 {
+        padding: 20px;
+        /*min-height: 150px !important;*/
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+      }
+      h4{
+        font-weight: 600;
+        color: #dd4b39;
+      }
+      .description-block{
+        text-align: left;
+      }
+      .description-block h5{
+        margin:5px 0px 10px !important;
+        color: #dd4b39;
+      }
+      .description-block span{
+        font-size: 16px;
+      }
+      .wrap{
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+     <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="row">
+          <div class="col-xs-1 com-lg-1" id="return">
+            <button class="btn btn-tool btn-lg"><i class="fa fa-mail-reply"></i></button>
+          </div>
+          <div class="col-xs-8 col-lg-10">
+            <h2  style="margin-top:0px;">预警详情</h2>
+          </div>  
+          <div class="col-xs-1 col-lg-1">
+            <button class="btn btn-tool btn-lg" onclick="in_route('warningdetail')"><i class="fa fa-refresh"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- Left col -->
+          <section class="col-lg-7 connectedSortable">
+           <!-- Widget: user widget style 1 -->
+              <div class="box box-widget widget-user">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+                <div class="widget-user-header1 bg-red-active">
+                  <h3 class="widget-user-username">mysql服务器：192.168.0.5 A区</h3>
+                  <!-- <hr style="height:1px;border:none;border-top:1px solid #a5a4a4; margin:0px;" /> -->
+                </div>
+                <div class="box-footer" style="padding-top:5px;">
+                  <h4 class="">威胁信息</h4>
+                  <p class="wrap">2017-11.11:15:30, src:47.52.140.157, dst:221.232.138.204, sqlinjection, url:http://www.hbeducloud.com/s/app/data.php</p>
+                  <div class="row">
+                    <div class="col-sm-6 border-right">
+                      <div class="description-block">
+                        <h5 class="description-header">可能危害</h5>
+                        <span class="">2017-11.11:15:30, src:47.52.140.157, dst:221.232.138.204, sqlinjection, url:http://www.hbeducloud.com/s/app/data.php</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-6 border-right">
+                      <div class="description-block">
+                        <h5 class="description-header">处置建议</h5>
+                        <span class="">2017-11.11:15:30, src:47.52.140.157, dst:221.232.138.204, sqlinjection, url:http://www.hbeducloud.com/s/app/data.php</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                  </div><!-- /.row -->
+                </div>
+              </div><!-- /.widget-user -->
+            <!-- 处置部分 -->
+            <div class="row">
+              <!-- 处置建议 -->
+              <div class="col-md-12">
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">处置建议</h3>
+                  </div><!-- /.box-header -->
+                  <div class="box-body">
+                    <div>
+                      <div class="form-group">
+                      <label id="commit_callback">处置</label>
+                      <textarea id="extra" class="form-control" rows="3" placeholder="请输入建议 ..."></textarea>
+                    </div>
+                      <div class="form-group">
+                        <button class="btn btn-default" id="submail"><i class="fa fa-envelope-o"></i>寻求帮助</button>
+                        <div class="pull-right">
+                        <button type="submit" class="btn btn-primary"  id="commit_own"><i class="fa fa-pencil"></i> 提交</button>
+
+                    <script type="text/javascript" language="javascript" class="init">
+                        $("#commit_own").click(function () {
+                            // 进入详情页的过程中存储id到sesion了
+
+                            var extra = document.getElementById("extra").value;
+//                            var e_id = 'opt222'
+                             console.log(extra)
+                            $.ajax({
+                                type:"GET",
+                                url:"/proj/warning_del/?extra="+extra, //测试用,test_list
+                                dataType:"text",
+                                //data: {dat:dict},
+                                success:function(res){
+                                    //console.log("已经提交")
+                                     $("#commit_callback").text(res);
+                                    run(2);
+
+                                    // refush the complete button
+                                    refresh_right()
+                                }
+                            });
+
+                        })
+                    </script>
+<script>
+  /***********\
+   * 本页面增加 邮箱|提交的都增加了 id;
+   *
+   * 两个提交按钮全部设置了 id-》 click
+   *
+   *
+   * 增加了详情页;;;
+   * ****************/
+
+</script>
+
+
+
+
+                      </div>
+                      </div>
+                    </div>
+                    <div id="mail">
+                      <div class="form-group">
+                        <input class="form-control" placeholder="收件人:(如果是多个用户用';'分开)" id="mail_geters">
+                      </div>
+                      <div class="form-group">
+                        <textarea id="compose-textarea" class="form-control" style="height: 300px">
+
+                        </textarea>
+                      </div>
+                      <div class="form-group pull-right">
+                        <button class="btn btn-primary" onclick="send_email2()"><i class="fa fa-envelope-o" ></i> 发送</button>
+                          <script>
+                            function send_email2() {
+                                $.ajax({
+                                    type: "GET",
+                                    //url:"/static/edit/json_data/demo.json",//jsonstr
+//                                    data: {
+//                                        "mail_geters": $('#mail_geters').val(),
+//                                        "mail_content": $('#compose-textarea').val()
+//                                    },
+                                    url: "/proj/utils/send_email/?mail_geters="+$('#mail_geters').val()+"&mail_content="+$('#compose-textarea').val(),//jsonstr
+                                    dataType: "text",
+                                    success: function (res) {
+                                        alert(res)
+                                        // refush the complete button
+                                        refresh_right()
+                                    }
+                                })
+                            }
+                          </script>
+                      </div>
+                    </div>
+                  </div><!-- /.box-body -->
+                </div><!-- /. box -->
+              </div>
+            </div>
+          </section><!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-5 connectedSortable">
+             <!-- 水平时间轴 -->
+            <div class="box box-danger">
+              <div class="box-header with-border">
+                <i class="fa fa-warning"></i>
+                <h3 class="box-title">预警处置</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <div class="time_line_box">
+                 <div class="time_line" style="width:100%;">
+                  <div class="time_line_background" style="transform:scaleX(0.97); ">
+                    <span class="filling_line"></span>
+                    <ol  class="ol">
+                      <li><a   class="order_item" style="left:0%;"></a></li>
+                      <li><div class="order_item" style="left:32%;"></div></li>
+                      <li><div   class="order_item" style="left:65%;"></div></li>
+                      <li><div  class="order_item" style="left:98%;"></div></li>
+                    </ol>
+                  </div>
+                  <ol>
+                    <li><a  class="text_item"  style="left:0%;">告警</a></li>
+                    <li><a  class="text_item"  style="left:30%;">签收</a></li>
+                    <li><a  class="text_item"  style="left:60%;">处置</a></li>
+                    <li><a  class="text_item"  style="left:89%;">完成</a></li>
+                  </ol>
+                 </div>
+                </div>
+              </div><!-- /.box-body -->
+              <div class="box-footer text-center">
+                <button class="btn btn-warning btn-flat">忽略本事件</button>
+                <button  id="sure_complete" class="btn btn-primary btn-flat" style="margin-left:5px;">处理完成</button>
+
+                <script type="text/javascript" language="javascript" class="init">
+                        $("#sure_complete").click(function () {
+                            $.ajax({
+                                type:"GET",
+                                url:"/proj/user_event_complete/",
+                                dataType:"text",
+                                //data: {dat:dict},
+                                success:function(res){
+                                    //console.log("已经提交")
+                                     $("#commit_callback").text(res);
+                                    run(3);
+
+                                    // refush the complete button
+                                    refresh_right()
+                                }
+                            });
+
+                        })
+                    </script>
+
+              </div>
+            </div><!-- /.box -->
+            <!-- 垂直时间轴 处置详情 -->
+            <div class="box box-success">
+              <div class="box-header with-border">
+                <i class="fa fa-inbox"></i>
+                <h3 class="box-title">预警处置详情</h3>
+              </div><!-- /.box-header -->
+
+              <!--------------处置预警江青请求url的形式------------>
+            <div class="box-body" id="event_detail_right">
+            </div>
+              <script>
+                  function refresh_right() {
+                      $.ajax({
+                          type:"GET",
+                          url:"/proj/event_detail_right/",
+                          dataType:"text",
+                          //data: {dat:dict},
+                          success:function(res){
+                              //console.log("已经提交")
+                               $("#event_detail_right").html(res);
+                          }
+                      });
+                  }
+
+                  refresh_right()
+              </script>
+
+
+            </div><!-- /.box -->
+            
+          </section><!-- right col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+
+  </body>
+  <script>
+
+    //请求提交的函数
+
+
+
+
+    $("#mail").hide();
+    $("#submail").click(function(event) {
+      $("#mail").slideDown('10', function() {
+        
+      });
+    });
+    run(0);
+    run(1);
+
+    $('#sure_complete').hide()
+
+   $.ajax({
+      type:"GET",
+      url:"/proj/event_stat/",
+      dataType:"text",
+      //data: {dat:dict},
+      success:function(res){
+          console.log(res)
+           if(parseInt(res) == 2){
+               //console.log("处理状态")
+               run(2)
+               // delete the complete-button
+                $('#sure_complete').show()
+           }
+           if(parseInt(res) == 3){
+               //console.log("完成状态")
+               run(3)
+                $('#sure_complete').hide()
+
+           }
+      }
+  });
+
+    ////////** 注意在这里默认加载 **/
+
+
+      // $(function () {
+        //Add text editor
+        $("#compose-textarea").wysihtml5();
+      // });
+
+
+    // var parames_d=["warningdetail","192.168.0.0"]
+    // 分析跳转
+    // $("button[name=detail]").click(function(event) {
+    //     in_route("voucher",parames_d)
+    // });
+
+    console.log(parames);
+    // 返回上一页
+     $("#return").click(function(event) {
+        in_route(parames);
+    })
+  </script>
+</html>

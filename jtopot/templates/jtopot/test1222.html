@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <title>首页图片交互作图脚本</title>
+    <link rel="stylesheet" href="/static/edit/css/style.css">
+<body>
+
+<textarea id="jtopo_textfield" style="display:none;width: 60px;position: absolute;" onkeydown="if(event.keyCode==13)this.blur();"></textarea>
+
+<div class="right">
+    <div id="content">
+        <canvas id="canvas">sorry,your browser do not support canvas label</canvas>
+    </div>
+</div>
+<ul id="uploadmenu" style="display:none;">
+    <li class = "li1"><a>网络设备</a>
+        <ul class = "nav1 lili">
+        <li id = "firework.png"><span>防火墙</span><a><img src="/static/edit/img/fk.png"></a></li>
+        <li id = "router.png"><span>路由器</span><a><img src="/static/edit/img/rr.png"></a></li>
+        <li id = "router1.png"><span>路由器</span><a><img src="/static/edit/img/rr1.png"></a></li>
+        <li id = "serve2.png"><span>服务器</span><a><img src="/static/edit/img/se2.png"></a></li>
+        <li id = "serve3.png"><span>服务器</span><a><img src="/static/edit/img/se3.png"></a></li>
+        <li id = "serve1.png"><span>服务器</span><a><img src="/static/edit/img/se1.png"></a></li>
+        <li id = "terminal.png"><span>终端</span><a><img src="/static/edit/img/tl.png"></a></li>
+        <li id = "switch.png"><span>交换机</span><a><img src="/static/edit/img/sh.png"></a></li>
+        <li id = "switchOptical.png"><span>光纤交换机</span><a><img src="/static/edit/img/sO.png"></a></li>
+        <li id = "monitor.png"><span>监测设备</span><a><img src="/static/edit/img/mr.png"></a></li>
+        <li id = "storageServer.png"><span>存储服务器</span><a><img src="/static/edit/img/ss.png"></a></li>
+        <li id = "cloud.png"><span class = "nob">internet</span><a><img src="/static/edit/img/cd.png"></a></li>
+        </ul>
+    </li>
+    <li class = "li2"><a>其他选项卡</a>
+        <ul class = "nav2 lili">
+        <li><span>回到首页</span></li>
+        <li><span>无</span></li>
+        <li><span>无</span></li>
+        <li><span>无</span></li>
+        <li><span>无</span></li>
+        <li><span>无</span></li>
+        <li><span class = "nob">无</span></li>
+        </ul>
+    </li>
+        <li class = "li3"><a>载入自己设备</a>
+        <ul class = "nav3 lili">
+            <li id = "newpics/1.png"><span>1</span><a><img src="/static/edit/img/images/s_res_pics/11.png"></a></li>
+            <li id = "newpics/2.png"><span>2</span><a><img src="/static/edit/img/images/s_res_pics/11.png"></a></li>
+            <li id = "newpics/3.png"><span>3</span><a><img src="/static/edit/img/images/s_res_pics/11.png"></a></li>
+            <li id = "newpics/4.png"><span>4</span><a><img src="/static/edit/img/images/s_res_pics/11.png"></a></li>
+            <li id = "newpics/5.png"><span>5</span><a><img src="/static/edit/img/images/s_res_pics/11.png"></a></li>
+            <li id = "newpics/6.png"><span>6</span><a><img src="/static/edit/img/images/s_res_pics/11.png"></a></li>
+        </ul>
+    </li>
+
+</ul>
+
+<ul id="contextmenu" style="display:none;">
+    <li><a>添加连线</a></li>
+    <li><a>添加节点</a></li>
+
+    <li id = "text"><a>设置文字位置</a>
+    <ul class = "lili1 nav5">
+        <li id = "Top_Center"><span>上</span></li>
+        <li id = "Bottom_Center"><span>下</span></li>
+        <li id = "Middle_Left"><span>左</span></li>
+        <li id = "Middle_Right"><span>右</span></li>
+        <li id = "Middle_Center"><span class = "nob">中</span></li>
+    </ul>
+    </li>
+    <li id = "alarm"><a>警告</a>
+    <ul class = "lili1 nav6">
+        <li id = "00"><span>undefined</span></li>
+        <li id = "11"><span>一级告警</span></li>
+        <li id = "22"><span>二级告警</span></li>
+        <li id = "33"><span>三级告警</span></li>
+        <li id = "44"><span class = "nob">取消告警</span></li>
+    </ul>
+    </li>
+    <li><a>顺时针旋转</a></li>
+    <li><a>逆时针旋转</a></li>
+    <li><a>放大</a></li>
+    <li><a>缩小</a></li>
+    <li><a>删除该节点</a></li>
+    <li><a>取消</a></li>
+</ul>
+<ul id="linkmenu" style="display:none;">
+    <li><a>修改颜色(随机)</a></li>
+    <li><a>改为红色</a></li>
+    <li><a>改为普通颜色</a></li>
+    <li><a>删除连线</a></li>
+    <li><a>取消</a></li>
+</ul>
+
+<script src="/static/proj/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="/static/edit/js/jtopo-0.4.8-min.js" type="text/javascript"></script>
+<!--<script type="text/javascript" src="/static/jtopot/js/new_edit.js"></script>-->
+<script type="text/javascript" src="/static/jtopot/own_jtopo/newl_edit.js"></script>
+</body>
+</html>

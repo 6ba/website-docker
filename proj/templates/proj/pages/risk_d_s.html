@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- <meta http-equiv="Cache-Control" content="max-age=28800000" /> -->
+    <style>
+      span{
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="">
+      <section class="content-header">
+        <div class="row">
+          <div class="col-xs-1 com-lg-1">
+            <button class="btn btn-tool btn-lg" id="return"><i class="fa fa-mail-reply"></i></button>
+          </div>
+          <div class="col-xs-8 col-lg-10">
+            <h2  style="margin-top:0px;">风险列表详情</h2>
+          </div>  
+          <div class="col-xs-1 col-lg-1">
+            <button class="btn btn-tool btn-lg" id="refresh" onclick="in_route('risk_d_s')"><i class="fa fa-refresh"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- left col-->
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">风险列表记录</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body ">
+                <div class="tab-content">
+                  <table id="logs" class="table table-bordered table-striped"></table>
+                </div>
+              </div><!-- /.box-body -->
+            </div><!-- /. box -->
+          </div><!-- /.col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+    
+  </body>
+  <script>
+    $.ajax({
+        type: "GET",
+        url: "/proj/cruiser_task_detail/",
+        dataType: "json",
+        success: function (res) {
+            $('#logs').DataTable({
+                ordering: false,
+                autoWidth: false,
+                info: true,
+                data: res.res,
+                columns: [
+                    {title: " "},
+                    {title: "巡检告警"},
+                    {title: "安全级别"},
+                    // { title: "QoD" },
+                    {title: "主机"},
+                    {title: "端口"},
+                    {title: ""},
+                ],
+                oLanguage: {
+                    "sProcessing": "正在加载中......",
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "没有数据！",
+                    "sEmptyTable": "表中无数据存在！",
+                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty": "显示0到0条记录",
+                    "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                    "sSearch": "搜索",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "末页"
+                    }
+                }
+            });
+        }
+    })
+
+    var parames=["risk_d_s"];
+    // 风险列表详情
+    $("span[name=sign]").click(function(event) {
+      in_route("warningdetail",parames);
+    });
+     
+
+     // 返回上一页
+     $("#return").click(function(event) {
+        $.ajax({
+        url: "/proj/pages/risk_d.html",
+        type:"get",
+        dataType:"html",
+        success:function(msg){
+          $("#content").html(msg);
+      }
+    })
+    })
+
+
+    function  jump_to_detail(eid) {
+        console.log(eid)
+        $.ajax({
+            url: "/proj/pages/warningdetail.html?id=" + eid,
+            type: "get",
+            dataType: "html",
+            //data: q,
+            success: function (msg) {
+                // 验证签收的状态
+                   $.ajax({
+                       url: "/proj/user_event_click/",
+                       type: "get",
+                       dataType: "text",
+                       success: function (res) {
+                          console.log(res)
+                       }
+                   })
+                //
+
+                $("#content").html(msg);
+
+            }
+        })
+    }
+    
+    
+  </script>
+</html>

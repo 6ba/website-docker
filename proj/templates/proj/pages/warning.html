@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        z-index: 800;
+      }
+      span{
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+     <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+         威胁预警
+          <div class="pull-right" id="refresh" style="margin-right:20px;" onclick="in_route('warning')"><i class="fa fa-refresh"></i></div>
+        </h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <section class="col-lg-7 connectedSortable">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+              <div class="col-lg-4 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                  <div class="inner">
+                    <h3><span id="all_num"> </span><sup style="font-size: 20px">条</sup></h3>
+                    <p>历史预警总数</p>
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-bar-chart"></i>
+                  </div>
+                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div><!-- ./col -->
+              <div class="col-lg-4 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                  <div class="inner">
+                    <h3><span id="not_deled_ids"> </span><sup style="font-size: 20px">条</sup></h3>
+                    <p>待处理</p>
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-pie-chart"></i>
+                  </div>
+                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div><!-- ./col -->
+              <div class="col-lg-4 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                  <div class="inner">
+                    <h3><span id="have_certied_ids"> </span><sup style="font-size: 20px">条</sup></h3>
+                    <p>已记录数据</p>
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-pie-chart"></i>
+                  </div>
+                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div><!-- ./col -->
+            </div><!-- /.row -->
+
+                  <script>
+                $.ajax({
+                  type: "GET",
+                  url: "/proj/alert_home_info/",
+                  dataType: "json",
+                  success: function (res) {
+                      data = res.res
+                      $("#all_num").html(data["all_num"])
+                      // $("#deling_num").html(data["deling_ids"])
+                      // 已记录 和 待处理
+                      $("#have_certied_ids").html(data["have_certied_ids"])
+                      $("#not_deled_ids").html(data["not_deled_ids"])
+                  }})
+            </script>
+
+            <!-- 风险列表 -->
+            <div class="box box-success">
+              <div class="box-header with-border">
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                  <button id="risk" class="btn btn-default btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">查看历史记录</button>
+                </div><!-- /. tools -->
+                <i class="fa fa-inbox"></i>
+                <h3 class="box-title">威胁预警列表</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <table id="logs" class="table table-bordered table-striped table_height"></table>
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+          </section><!-- right col -->
+          <section class="col-lg-5 connectedSortable">
+            <!-- 扫描任务列表 -->
+
+            <!-- 扫描设置 -->
+            <div class="box box-info">
+              <div class="box-header with-border">
+               <!-- tools box -->
+                <i class="fa fa-inbox"></i>
+                <h3 class="box-title">敏感数据记录</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <table id="src" class="table table-bordered table-striped table_height"></table>
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+          </section><!-- right col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+  </body>
+  <script>
+    // topo跳转
+    //route(parames_list);
+    //alert("?????");
+    $.ajax({
+    type: "GET",
+    url: "/proj/threat_warning_lists/",
+    dataType: "json",
+    success: function(res) {
+        var b = ["","","","","","",""];
+        arr = res.data
+        fill(arr,10,b);
+        $('#logs').DataTable({
+            ordering: false,
+            autoWidth: false,
+            info: true,
+            data: arr,
+            columns: [
+                {title: " "},
+                {title: "时间"},
+                {title: "攻击类型"},
+                {title: "被攻击"},
+                {title: "攻击"},
+                {title: "次数"},
+                {title: ""},
+            ],
+            oLanguage: {
+                "sProcessing": "正在加载中......",
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "没有数据！",
+                "sEmptyTable": "表中无数据存在！",
+                "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                "sInfoEmpty": "显示0到0条记录",
+                "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                "sSearch": "搜索",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "末页"
+                }
+            }
+        });
+
+       }
+    })
+    
+    
+//
+  var parames=["warning"];
+//     //隐患详情
+//    $("span[name=sign]").click(function(event) {
+//      in_route("warningdetail",parames);
+//    });
+
+    function  jump_to_detail(eid) {
+        console.log(eid)
+        $.ajax({
+            url: "/proj/pages/warningdetail.html?id=" + eid,
+            type: "get",
+            dataType: "html",
+            //data: q,
+            success: function (msg) {
+                // 验证签收的状态
+                   $.ajax({
+                       url: "/proj/user_event_click/",
+                       type: "get",
+                       dataType: "text",
+                       success: function (res) {
+                          console.log(res)
+                       }
+                   })
+                //
+
+                $("#content").html(msg);
+
+            }
+        })
+    }
+
+    // 敏感数据
+     var arr1=[
+              ["2017/08/21","PMS","192.168.36.3","192.36.53.98","445"],
+              ["2017/09/08","PMS","192.5.6.3","192.5.3.6","223"],
+              ["2017/09/10","PMS","187.23.45.6","136.3.6.9","8808"],
+              ["2017/09/10","PMS","187.23.45.6","136.3.6.9","8808"],
+              ["2017/09/12","PMS","192.168.10.1","187.23.45.6","112"],
+              ["2017/09/12","PMS","192.168.10.1","187.23.45.6","112"],
+              ["2017/09/14","PMS","192.168.10.1","187.23.45.6","224"],
+              ["2017/09/15","PMS","192.168.10.1","187.23.45.6","1120"],
+    ]
+
+    function format ( d ) {
+      return "<p style=\"font-weight:700;\">"+d[0]+" "+d[1]+"  数据泄露</p>";
+    }
+
+//    $.ajax({
+//        type: "GET",
+//        url: "/proj/sensitive_data_lists/",
+//        dataType: "json",
+//        success: function(res){
+            var b = ["","","","",""];
+            fill(arr1,14,b);
+
+
+            var table = $('#src').DataTable( {
+            ordering: false,
+            // data: res.data ,
+                data: arr1,
+            lengthMenu: [14,10,5],
+            columns: [
+                { title: "时间" },
+                { title: "数据类型" },
+                { title: "泄漏源" },
+                { title: "流向IP"},
+                { title: "端口"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+          });
+
+//        }
+//    })
+
+
+    $('#src tbody').on('click', 'td', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            console.log(row.data());
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    });
+
+    // 历史纪录
+    parames_s=["warning"];
+    $("#risk").click(function(event) {
+      in_route("warn_risk",parames_s);
+    });
+
+    $.fn.dataTable.ext.errMode = 'none';
+  </script>
+</html>

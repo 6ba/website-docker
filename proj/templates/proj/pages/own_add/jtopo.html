@@ -1,0 +1,157 @@
+ <!-- 拓扑图 -->
+             <div id="topo" style="width:100%;">
+              <!-- <iframe src="http://192.168.0.110:7777/jtopo/test_index" frameborder="0" scrolling="no" id="topo" style="margin-top:30px;" ></iframe> -->
+              <div id="contentc" style="width:100%;height:100%">
+                <canvas id="canvas" ></canvas>
+              </div>
+              <div class="modal fade" id="topoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              </div>
+
+         <style>
+
+        #opreate_menu {
+            width:122px;
+            border: 1px solid #aaa;
+            border-radius:7px;
+            border-bottom: 0;
+            background: #eee;
+            position: absolute;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: none;
+            box-shadow: 0 0 5px #434343;
+        }
+        #opreate_menu li{
+            width:122px;
+            position:relative;
+        }
+
+        #opreate_menu li a {
+            height:30px;
+            line-height: 30px;
+            width:100px;
+            margin-left: 11px;
+            text-align: center;
+            display: block;
+            border-bottom: 1px solid #aaa;
+            cursor: pointer;
+        }
+
+        /*.lili1 li{*/
+            /*height:30px;*/
+            /*width:100px!important;*/
+        /*}*/
+        /*.lili1 li:hover{*/
+            /*background: #E9E7E7;*/
+            /*border-radius: 5px;*/
+        /*}*/
+        /*.lili1 li:active{*/
+            /*background:#FFFFFF;*/
+            /*border-radius: 0px;*/
+        /*}*/
+        /*.lili1{*/
+            /*border-radius:5px;*/
+            /*box-shadow: 0 0 5px #434343;*/
+        /*}*/
+        /*.lili1 li span{*/
+            /*display:inline-block;*/
+            /*height:30px;*/
+            /*line-height: 30px;*/
+            /*text-align: center;*/
+            /*width:70px;*/
+            /*margin-left: 10px;*/
+            /*border-bottom: 1px #ADABAB solid;*/
+        /*}*/
+
+
+        /*.nav4, .nav5, .nav6{*/
+            /*list-style: none;*/
+            /*position:absolute;*/
+            /*left: 123px;*/
+            /*top: 220px;*/
+            /*display: none;*/
+            /*cursor:pointer;*/
+        /*}*/
+
+    </style>
+
+
+    <ul id="opreate_menu">
+      <li><a>添加设备</a></li>
+      <li><a>修改设备</a></li>
+      <li><a>删除设备</a></li>
+        <li><a>区域转移</a>
+            <!--<ul class = "lili1 nav5">-->
+        <!--<li id = "A栋"><span>A栋</span></li>-->
+        <!--<li id = "B栋"><span>B栋</span></li>-->
+        <!--<li id = "食堂"><span>食堂</span></li>-->
+        <!--<li id = "服务器区"><span>服务器区</span></li>-->
+        <!--<li id = "网络和安全设备区"><span class = "nob">网络和安全设备区</span></li>-->
+    <!--</ul>-->
+        </li>
+      <li><a>取消</a></li>
+    </ul>
+
+
+  <style>
+    .dialog{
+        /*width: 240px;*/
+        max-height:400px;
+        /*min-height: 165px;*/
+        border: 1px solid #8E8E8F;
+        border-radius: 3px;
+        box-shadow: 4px 4px 3px rgba(20%,20%,40%,0.5);
+        position: absolute;
+        background-color: white;
+        padding: 10px;
+        overflow: auto;
+        z-index: 99;
+    }
+    .dialog h5{
+      font-weight: 700;
+      font-size: 16px;
+      margin-left: 5px;
+    }
+    .dialog span{
+      margin-left: 5px;
+      margin-right: 5px;
+      font-weight: 400 !important;
+    }
+    .gongji td:nth-child(2){
+        color: #dd4b39;
+    }
+
+</style>
+
+                 <div id="dialog" class="dialog" style="display: none;"></div>
+
+                 <script>
+
+    function  jump_to_detail(eid) {
+        console.log(eid)
+        $.ajax({
+            url: "/proj/pages/warningdetail.html?id=" + eid,
+            type: "get",
+            dataType: "html",
+            //data: q,
+            success: function (msg) {
+                // 验证签收的状态
+                   $.ajax({
+                       url: "/proj/user_event_click/",
+                       type: "get",
+                       dataType: "text",
+                       success: function (res) {
+                          console.log(res)
+                       }
+                   })
+                //
+
+                $("#content").html(msg);
+
+            }
+        })
+    }
+                 </script>
+
+</div>

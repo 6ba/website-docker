@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <title>首页图片交互作图脚本</title>
+    <!--<link rel="stylesheet" href="/static/edit/css/style.css">-->
+     <script src="/static/proj/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/proj/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/proj/plugins/font-awesome-4.4.0/css/font-awesome.min.css">
+<body>
+
+ <!-- 拓扑图 -->
+             <div id="topo" style="width:100%;">
+              <!-- <iframe src="http://192.168.0.110:7777/jtopo/test_index" frameborder="0" scrolling="no" id="topo" style="margin-top:30px;" ></iframe> -->
+              <div id="contentc" style="width:100%;height:100%">
+                <canvas id="canvas" ></canvas>
+              </div>
+
+
+              <div class="modal fade" id="topoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              </div>
+  <style>
+    .dialog{
+        /*width: 240px;*/
+        max-height:400px;
+        /*min-height: 165px;*/
+        border: 1px solid #8E8E8F;
+        border-radius: 3px;
+        box-shadow: 4px 4px 3px rgba(20%,20%,40%,0.5);
+        position: absolute;
+        background-color: white;
+        padding: 10px;
+        overflow: auto;
+        z-index: 99;
+    }
+    .dialog h5{
+      font-weight: 700;
+      font-size: 16px;
+      margin-left: 5px;
+    }
+    .dialog span{
+      margin-left: 5px;
+      margin-right: 5px;
+      font-weight: 400 !important;
+    }
+    .gongji td:nth-child(2){
+        color: #dd4b39;
+    }
+
+</style>
+
+                 <div id="dialog" class="dialog" style="display: none;"></div>
+
+                 <script>
+
+    function  jump_to_detail(eid) {
+        console.log(eid)
+        $.ajax({
+            url: "/proj/pages/warningdetail.html?id=" + eid,
+            type: "get",
+            dataType: "html",
+            //data: q,
+            success: function (msg) {
+                // 验证签收的状态
+                   $.ajax({
+                       url: "/proj/user_event_click/",
+                       type: "get",
+                       dataType: "text",
+                       success: function (res) {
+                          console.log(res)
+                       }
+                   })
+                //
+
+                $("#content").html(msg);
+
+            }
+        })
+    }
+                 </script>
+
+</div>
+
+
+<script src="/static/proj/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="/static/edit/js/jtopo-0.4.8-min.js" type="text/javascript"></script>
+<!--<script type="text/javascript" src="/static/jtopot/js/new_edit.js"></script>-->
+<script type="text/javascript" src="/static/jtopot/own_jtopo/edit2.js"></script>
+</body>
+</html>

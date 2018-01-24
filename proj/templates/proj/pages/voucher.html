@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="/static/proj/dist/js/echarts.common.min.js"></script>
+    <style>
+      .nav-tabs>li>a{
+        color:#444;
+        font-weight: 700;
+      }
+      .nav-tabs>li.active>a{
+        color:#357ca5;
+      }
+      .content-header{
+        background-color: #ecf0f5;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="row">
+          <div class="col-xs-1 com-lg-1">
+            <button class="btn btn-tool btn-lg" id="return"><i class="fa fa-mail-reply"></i></button>
+          </div>
+          <div class="col-xs-8 col-lg-10">
+            <ul class="ul-main" style="margin-bottom:20px;">
+              <li data-name="pages-voucher_all" class="active_li" name="_ip">关联分析</li>
+              <li data-name="pages-voucher_out" name="_ip">外部IP</li>
+              <li data-name="pages-voucher_in" name="_ip">内部IP</li>
+            </ul>
+          </div>  
+          <div class="col-xs-1 col-lg-1">
+            <button class="btn btn-tool btn-lg" id="refresh" onclick="in_route('voucher')"><i class="fa fa-refresh"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content" id="sec_content"></section>
+      <!-- <div  class="content-wrapper"></div> -->
+
+  </body>
+  <script> 
+    $.ajax({ 
+          url: "/proj/pages/voucher_all.html",
+          ype:"get",           
+          dataType:"html",
+          data: "",
+          success:function(msg){ 
+              $("#sec_content").html(msg);
+          } 
+    })
+    
+    //三个子页面
+    $("li[name=_ip]").click(function(event) {
+      $(this).addClass('active_li');
+      $(this).siblings().removeClass('active_li');
+      var data=$(this).data('name');
+      re = new RegExp("-", "g");
+      var new_data=data.replace(re,'/');
+      $.ajax({ 
+            url: "/proj/"+new_data+".html",
+            dataType:"html",
+            data: "",
+            success:function(msg){ 
+                $("#sec_content").html(msg);
+            } 
+        })
+    });
+
+    //刷新页面
+    $("#refresh").click(function(event) {
+      in_route('voucher_all', {})
+    });
+
+    //返回上一页
+    $("#return").click(function(event) {
+      $.ajax({ 
+          url: "/proj/pages/"+parames[0]+".html",
+          type:"get",           
+          dataType:"html",
+          data: "",
+          success:function(msg){ 
+              $("#content").html(msg);
+          }           
+      })
+    });
+  </script>
+  
+</html>

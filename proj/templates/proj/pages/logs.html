@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- <meta http-equiv="Cache-Control" content="max-age=28800000" /> -->
+    <link rel="stylesheet" href="/static/proj/plugins/datatimepicker/css/bootstrap-datetimepicker.min.css">
+    <script src="/static/proj/dist/js/echarts.common.min.js"></script>
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        z-index: 800;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+         存证分析
+          <div class="pull-right" id="refresh" style="margin-right:20px;" onclick="in_route('logs')"><i class="fa fa-refresh"></i></div>
+        </h1>
+
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- left col-->
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-7">
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">敏感外发最多IP</h3>
+                  </div><!-- /.box-header -->
+                  <div class="box-body ">
+                    <div id="chart1" style="width:100%;height:300px;"></div>
+                  </div><!-- /.box-body -->
+                </div><!-- /. box -->
+              </div>
+              <div class="col-md-5">
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">链接最多的外发IP</h3>
+                  </div><!-- /.box-header -->
+                  <div class="box-body ">
+                    <div id="chart2" style="width:100%;height:300px;"></div>
+                  </div><!-- /.box-body -->
+                </div><!-- /. box -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-7">
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">告警最多IP</h3>
+                  </div><!-- /.box-header -->
+                  <div class="box-body ">
+                    <div id="chart3" style="width:100%;height:300px;"></div>
+                  </div><!-- /.box-body -->
+                </div><!-- /. box -->
+              </div>
+              <div class="col-md-5">
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">漏洞最多的内部IP</h3>
+                  </div><!-- /.box-header -->
+                  <div class="box-body ">
+                    <div id="chart4" style="width:100%;height:300px;"></div>
+                  </div><!-- /.box-body -->
+                </div><!-- /. box -->
+              </div>
+            </div>
+          </div><!-- /.col -->
+          <!-- right col -->
+          <div class="col-md-4">
+            <!-- IP查询 -->
+            <div class="box box-solid">
+              <div class="box-header with-border">
+                <h4 class="box-title">IP查询</h4>
+              </div>
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-1 control-label" style="font-size:20px;">IP</label>
+                  <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputEmail3" placeholder="请输入要查询的IP">
+                  </div>
+                </div>
+                <div class="row" style="margin-top:50px;">
+                  <div class="col-sm-6 col-lg-6">
+                    <!-- 开始时间 -->
+                    <div class="form-group">
+                      <label>起始时间:</label>
+                      <div class="input-group date form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                      </div>
+                    </div><!-- /.form group -->
+                  </div>
+                  <div class="col-sm-6 col-lg-6">
+                    <!-- 结束 -->
+                    <div class="form-group">
+                      <label>结束时间:</label>
+                      <div class="input-group date form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                      </div>
+                    </div><!-- /.form group -->
+                  </div>
+                </div>
+              </div><!-- /.box-body -->
+              <div class="box-footer clearfix">
+                <div class="pull-right">
+                  <button id="btu_ip" class="btn btn-primary btn-flat">查询</button>
+                  <!-- <button class="btn btn-success btn-flat">下载</button> -->
+                </div>
+              </div>
+            </div><!-- /. box -->
+             <!-- 日志表下载 -->
+            <div class="box box-solid">
+              <div class="box-header with-border">
+                <h4 class="box-title">列表下载</h4>
+              </div>
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class=" control-label" >需要生成的列表项</label>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox">
+                          流量
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox">
+                          主机
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox">
+                          应用
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox">
+                          系统
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 col-lg-6">
+                    <!-- 开始时间 -->
+                    <div class="form-group">
+                      <label>起始时间:</label>
+                      <div class="input-group date form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                      </div>
+                    </div><!-- /.form group -->
+                  </div>
+                  <div class="col-sm-6 col-lg-6">
+                    <!-- 结束 -->
+                    <div class="form-group">
+                      <label>结束时间:</label>
+                      <div class="input-group date form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                      </div>
+                    </div><!-- /.form group -->
+                  </div>
+                </div>
+              </div><!-- /.box-body -->
+              <div class="box-footer clearfix">
+                <div class="pull-right">
+                  <button class="btn btn-success btn-flat">下载</button>
+                </div>
+              </div>
+            </div><!-- /. box -->
+          </div><!-- /.col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+    <script src="/static/proj/plugins/datatimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/proj/plugins/datatimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+  </body>
+  <script>
+    $('.form_date1').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_date2').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+    // chart1
+    var myChart = echarts.init(document.getElementById('chart1'));
+      option = {
+          color: ['#3398DB'],
+          tooltip : {
+              trigger: 'axis',
+              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+              }
+          },
+          grid: {
+              left: '3%',
+              right: '8%',
+              bottom: '3%',
+              top:'3%',
+              containLabel: true
+          },
+          xAxis : [
+              {
+                  type : 'category',
+                  name : "IP",
+                  nameTextStyle: {
+                      fontSize: 18
+                  },
+                  data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                  axisTick: {
+                      alignWithLabel: true
+                  }
+              }
+          ],
+          yAxis : [
+              {
+                  type : 'value'
+              }
+          ],
+          series : [
+              {
+                  name:'直接访问',
+                  type:'bar',
+                  barWidth: '60%',
+                  data:[10, 52, 200, 334, 390, 330, 220]
+              }
+          ]
+      };
+
+    myChart.setOption(option);
+
+
+
+    // chart2
+    var myChart = echarts.init(document.getElementById('chart2'));
+      option = {
+          tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                  type: 'shadow'
+              }
+          },
+          grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              top:'0%',
+              containLabel: true
+          },
+          xAxis: {
+              type: 'value',
+              boundaryGap: [0, 0.01]
+          },
+          yAxis: {
+              type: 'category',
+              data: ['192.15.36.2','114.12.5.9','185.25.65.33','114.123.114.1','12.85.66.102','120.152.142.11']
+          },
+          series: [
+
+              {
+                  name: 'IP',
+                  type: 'bar',
+                  data: [19325, 23438, 31000, 121594, 134141, 681807]
+              }
+          ]
+      };
+
+
+    myChart.setOption(option);
+
+
+    // chart3
+    var myChart = echarts.init(document.getElementById('chart3'));
+      option = {
+          color: ['#3398DB'],
+          tooltip : {
+              trigger: 'axis',
+              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+              }
+          },
+          grid: {
+              left: '3%',
+              right: '8%',
+              bottom: '3%',
+              top:'3%',
+              containLabel: true
+          },
+          xAxis : [
+              {
+                  type : 'category',
+                  name : "IP",
+                  nameTextStyle: {
+                      fontSize: 18
+                  },
+                  data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                  axisTick: {
+                      alignWithLabel: true
+                  }
+              }
+          ],
+          yAxis : [
+              {
+                  type : 'value'
+              }
+          ],
+          series : [
+              {
+                  name:'直接访问',
+                  type:'bar',
+                  barWidth: '60%',
+                  data:[10, 52, 200, 334, 390, 330, 220]
+              }
+          ]
+      };
+
+    myChart.setOption(option);
+
+
+    // chart4
+    var myChart = echarts.init(document.getElementById('chart4'));
+      option = {
+          tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                  type: 'shadow'
+              }
+          },
+          grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              top:'0%',
+              containLabel: true
+          },
+          xAxis: {
+              type: 'value',
+              boundaryGap: [0, 0.01]
+          },
+          yAxis: {
+              type: 'category',
+              data: ['192.15.36.2','114.12.5.9','185.25.65.33','114.123.114.1','12.85.66.102','120.152.142.11']
+          },
+          series: [
+             
+              {
+                  name: 'IP',
+                  type: 'bar',
+                  data: [19325, 23438, 31000, 121594, 134141, 681807]
+              }
+          ]
+      };
+
+    myChart.setOption(option); 
+
+
+
+     var parames=["logs"];
+     $("#btu_ip").click(function(event) {
+        in_route("voucher",parames);
+    })
+    
+    
+  </script>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+   <script src="/static/proj/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/static/jtopot/js/jtopo-min.js"></script>
+
+    <script type="text/javascript" src="/static/jtopot/js/jtopo-min.js"></script>
+  <script  src="/static/jtopot/own_jtopo/local_page.js"></script>
+</head>
+<body>
+
+
+<div id="contentc">
+    <canvas id="canvas" width="100%" height="100%"></canvas>
+</div>
+
+
+<script>
+    function show_index() {
+
+        var stage;
+		$(document).ready(function(){
+			var canvas = document.getElementById('canvas');
+            canvas.height = window.innerHeight * 0.88;
+            canvas.width = window.innerWidth * 0.55;
+            // 857x1056
+
+            console.log("画布高宽: "+ canvas.height + "x" + canvas.width)
+			stage = new JTopo.Stage(canvas);
+
+			var scene = new JTopo.Scene();
+			scene.background = '/static/jtopot/img/test_bg.png';
+
+			function AddContainer(x, y, height, width, fillColor, text, alarm) {
+                var container = new JTopo.Container(text);
+                container.fillColor = fillColor;
+                container.setBound(x, y, height, width);
+                container.textPosition = 'Middle_Center';
+                container.fontColor = '0,255,0';
+                container.font = '20pt 微软雅黑';
+                container.borderColor = '0,0,0';
+                container.borderWidth = 5; // 边框的宽度
+                container.borderRadius = 20; // 圆角
+                container.alarm = alarm
+                container.alpha = 0.12
+                if(alarm != 'null'){
+                    // 状态是 1 就会闪,
+                    container.show_text = function () {container.temp_node = addTextNode(container.alarm, container.x + container.width * 0.8, container.y - 40);}
+                    container.remove_text = function () {scene.remove(container.temp_node)}
+                    cotaniner_change_color(container, fillColor)
+                }
+
+                container.click(function(){
+                    commit()
+			    });
+
+
+                scene.add(container);
+                return container
+            }
+
+            function addTextNode(alarmText, x, y) {
+                var defaultNode = new JTopo.Node();
+                defaultNode.text = alarmText; // 文字
+                defaultNode.textPosition = 'Middle_Center';// 文字居中
+                //defaultNode.textOffsetY = 1; // 文字向下偏移 8 个像素
+                defaultNode.font = '14px 微软雅黑'; // 字体
+                defaultNode.setLocation(x, y); // 位置
+                defaultNode.setSize(120, 30);  // 尺寸
+                defaultNode.borderRadius = 5; // 圆角
+                defaultNode.borderWidth = 2; // 边框的宽度
+                defaultNode.borderColor = '255,255,255'; //边框颜色
+                //defaultNode.alpha = 0.6; //透明度
+                defaultNode.fillColor = '255,0,0'
+                scene.add(defaultNode);
+	            return defaultNode
+            }
+
+            function cotaniner_change_color(curr, fillColor){
+                    setInterval(function(){
+                        if(curr.fillColor == fillColor){
+                            curr.fillColor = '255,0,0';
+                            //并且再右上方会弹出一个提示节点
+                            curr.show_text()
+                        }else{
+                            curr.fillColor = fillColor;
+                            curr.remove_text()
+                        }
+                    }, 600)
+            }
+
+
+            var get_json = {"data":
+                [{"name": "A栋办公区", "alarm":'告警信息 3 条'},
+                {"name": "B栋办公区", "alarm":'null'},
+                {"name": "C 区", "alarm": '预警信息 3 条'},
+                {"name": "服务器区", "alarm":'null'},]
+            }
+
+            var res_data = get_json.data
+            AddContainer(68, 346,200,340, '255,255,255', res_data[0]["name"], res_data[0]["alarm"])
+            AddContainer(286,459,188,290, '255,255,255', res_data[1]["name"], res_data[1]["alarm"])
+            AddContainer(489,513,130,278, '255,255,255', res_data[2]["name"], res_data[2]["alarm"])
+            AddContainer(639,204,387,620, '255,255,255', res_data[3]["name"], res_data[3]["alarm"])
+//            scene.mode = "select";
+			stage.add(scene);
+
+		});
+
+
+//            AddContainer(740,209,290,210, '255,255,255', "网站区", 0)
+//            AddContainer(756,455,260,138, '255,255,255', "PMS系统", 1)
+//            AddContainer(873,604,130,130, '255,255,255', "存储设备", 0)
+//            AddContainer(722,677,140,120, '255,255,255', "办公服务区", 0)
+     }
+    show_index()
+
+    function back_index() {
+        var max_width = window.innerWidth * 0.55;
+        var max_height = window.innerHeight* 0.88;
+
+        $("#contentc").children("#canvas").remove();
+        $("#contentc").html('<canvas id="canvas"></canvas>');
+        show_index()
+
+      
+    }
+</script>
+
+
+</body>
+</html>

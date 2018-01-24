@@ -1,0 +1,219 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="/static/proj/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="/static/proj/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/proj/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/proj/plugins/font-awesome-4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/proj/dist/css/AdminLTE.css">
+    <link rel="stylesheet" href="/static/proj/dist/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="/static/proj/dist/css/main.css">
+    <link rel="stylesheet" href="/static/proj/plugins/datatables/dataTables.bootstrap.css">
+    <!-- <script src="dist/js/jquery.cookie.js"></script> -->
+    <script src="/static/proj/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/proj/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/proj/dist/js/route.js"></script>
+    <script src="/static/proj/dist/js/jump_to_detail.js"></script>
+
+
+    <script type="text/javascript" src="/static/jtopot/js/jtopo-min.js"></script>
+
+
+
+    <style>
+      .treeview-menu {
+           /*display: inherit !important; */
+      }
+      li{
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+      <!-- Main Header -->
+      <header class="main-header">
+
+        <!-- Logo -->
+        <a href="/proj/" class="logo">
+          <span class="logo-lg">楚云安风险控制</span>
+        </a>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- Messages: style can be found in dropdown.less-->
+              <!-- User Account Menu -->
+              <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <!-- The user image in the navbar-->
+                  <img src="/static/proj/dist/img/avatar04.png" class="user-image" alt="User Image">
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                  <span class="hidden-xs">网络管理员</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- The user image in the menu -->
+                  <li class="user-header">
+                    <img src="/static/proj/dist/img/avatar04.png" class="img-circle" alt="User Image">
+                    <p>
+                      网络管理员
+                    </p>
+                  </li>
+                  <!-- Menu Body -->
+                  <!--<li class="user-body">-->
+                    <!--&lt;!&ndash;<div class="col-xs-4 text-center">&ndash;&gt;-->
+                      <!--&lt;!&ndash;<a href="#">Followers</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="col-xs-4 text-center">&ndash;&gt;-->
+                      <!--&lt;!&ndash;<a href="#">Sales</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                  <!--</li>-->
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <!--<a href="#" class="btn btn-default btn-flat">Profile</a>-->
+                    </div>
+                    <div class="pull-right">
+                      <a href="/logout/" class="btn btn-default btn-flat">登出</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+       <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar Menu -->
+          <ul class="sidebar-menu" id="head_ul">
+            <li class="header"></li>
+            <!-- Optionally, you can add icons to the links -->
+            <li class="active" data-name="index" id="index">
+              <a><i class="fa fa-link"></i> <span>24小时态势监控</span>
+              </a>
+            </li>
+            <li data-name="/proj/pages/warning" name="ref">
+              <a><i class="fa fa-link"></i> <span>威胁预警</span>
+              </a>
+            </li>
+            <li data-name="/proj/pages/scanning" name="ref">
+              <a><i class="fa fa-link"></i> <span>智能巡检</span>
+              </a>
+            </li>
+            <!--<li data-name="/proj/pages/intercept" name="ref">-->
+              <!--<a><i class="fa fa-link"></i> <span>泄露拦截</span>-->
+              <!--</a>-->
+            <!--</li>-->
+            <li data-name="/proj/pages/logs" name="ref">
+              <a><i class="fa fa-link"></i> <span>存证分析</span>
+              </a>
+            </li>
+
+            <!--<li data-name="/proj/pages/setting" name="ref">-->
+              <!--<a><i class="fa fa-link"></i> <span>系统设置</span>-->
+              <!--</a>-->
+            <!--</li>-->
+
+
+               <li class="treeview">
+              <a class="a-tree"><i class="fa fa-link"></i><span>系统设置</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu" name="u-tree">
+                <li data-name="/proj/pages/setting1" name="ref">
+                  <a>
+                    <i class="fa fa-circle-o"></i>诊断工具
+                  </a>
+                </li>
+                <li data-name="/proj/pages/setting2" name="ref">
+                  <a>
+                    <i class="fa fa-circle-o"></i>时间设置
+                  </a>
+                </li>
+                <li data-name="/proj/pages/setting3" name="ref">
+                  <a>
+                    <i class="fa fa-circle-o"></i>用户管理
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li data-name="/proj/pages/souquan" name="ref">
+              <a><i class="fa fa-link"></i> <span>授权信息</span>
+              </a>
+            </li>
+          </ul><!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+      <!-- Content Wrapper. Contains page content -->
+      <div id="content" class="content-wrapper"></div>
+    </div><!-- ./wrapper -->
+  </body>
+  <script>
+    $('.treeview-menu').hide();
+        $(".treeview").children().find('.treeview-menu').hide();
+    $(".a-tree").click(function(event) {
+      if($(this).find('i').eq(1).hasClass('fa-angle-left')){
+         $(this).next('.treeview-menu').slideDown();
+         $(this).find('i').eq(1).removeClass('fa-angle-left').addClass('fa-angle-down');
+      }else if($(this).find('i').eq(1).hasClass('fa-angle-down')){
+         $(this).next('.treeview-menu').slideUp();
+         $(this).find('i').eq(1).removeClass('fa-angle-down').addClass('fa-angle-left');
+      }
+    });
+
+    $.ajax({
+          url: "/proj/pages/monitor.html",
+          ype:"get",
+          dataType:"html",
+          data: "",
+          success:function(msg){
+              $("#content").html(msg);
+          }
+    })
+
+    $("#index").click(function(event) {
+      window.location.reload();
+    });
+
+
+
+    $("li[name=ref]").click(function(event) {
+      var new_data=$(this).data('name');
+
+      // ****$('ul[name=u-tree]').each(function() {
+      //   ****$('ul[name=u-tree]').find('li').removeClass('active');
+      // *****});
+      $("li").not($(this)).removeClass('active');
+      // ****$(this).parents('li').siblings().removeClass('active');
+      $(this).parents('li').addClass('active');
+      $(this).addClass('active');
+      // *****$(this).siblings().removeClass('active');
+      $.ajax({
+            url: new_data+".html",
+            ype:"get",
+            dataType:"html",
+            data: "",
+            success:function(msg){
+                $("#content").html(msg);
+            }
+        })
+    });
+
+  </script>
+
+</html>

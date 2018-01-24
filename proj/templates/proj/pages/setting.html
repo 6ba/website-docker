@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="Cache-Control" content="max-age=28800000" />
+   <link rel="stylesheet" href="/static/proj/plugins/datatables/dataTables.bootstrap.css">
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        z-index: 800;
+      }
+      .ifir{
+        color: #3c8dbc;
+      }
+      .isec{
+        color: #dd4b39;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+     <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+         系统管理
+           <div class="pull-right" id="refresh" style="margin-right:20px;" onclick="in_route('setting')"><i class="fa fa-refresh"></i></div>
+        </h1>
+        
+      </section>
+
+       <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">策略>>>地址</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body ">
+                <div class="tab-content tab-hight1">
+                  <table id="address" class="table table-bordered table-striped"></table>
+                </div>
+              </div><!-- /.box-body -->
+            </div><!-- /. box -->
+          </div>
+           <div class="col-md-4">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">策略>>>对象</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body ">
+                <div class="tab-content tab-hight1">
+                  <table id="tab2" class="table table-bordered table-striped"></table>
+                </div>
+              </div><!-- /.box-body -->
+            </div><!-- /. box -->
+          </div>
+           <div class="col-md-4">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">策略>>>管理</h3>
+                <div class="pull-right">
+                  <button class="btn bg-teal btn-sm" id="celue_add"><i class="fa fa-plus"></i></button>
+                </div>
+              </div><!-- /.box-header -->
+              <div class="box-body ">
+                <div class="tab-content tab-hight1">
+                  <table id="tab3" class="table table-bordered table-striped"></table>
+                </div>
+              </div><!-- /.box-body -->
+            </div><!-- /. box -->
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <!-- DONUT CHART -->
+            <div class="box box-info">
+              <div class="box-header with-border">
+                <h3 class="box-title">网络设置>>>静态路由</h3>
+                <div class="pull-right">
+                  <button class="btn bg-teal btn-sm" id="route_add"><i class="fa fa-plus"></i></button>
+                </div>
+              </div>
+              <div class="box-body">
+                <div class="tab-content tab-hight1">
+                  <table id="tab4" class="table table-bordered table-striped"></table>
+                </div>
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+          </div>
+           <div class="col-lg-6">
+            <!-- DONUT CHART -->
+            <div class="box box-info">
+              <div class="box-header with-border">
+                <h3 class="box-title">网络设置>>>接口设置</h3>
+              </div>
+              <div class="box-body">
+                <div class="tab-content tab-hight1">
+                  <table id="tab5" class="table table-bordered table-striped"></table>
+                </div>
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+          </div>
+        </div><!-- /.row -->
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+
+    <!-- 策略增加 -->
+    <div class="modal fade" id="celue" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">新建策略管理</h4>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">启用</label>
+                  <div class="col-sm-10">
+                    <input type="checkbox" class="modal-check">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">服务</label>
+                  <div class="col-sm-10">
+                    <select class="form-control">
+                      <option value="">选择服务对象</option>
+                      <option value="Load">Load</option>
+                      <option value="QTP">QTP</option>
+                      <option value="Winrunner">Winrunner</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputExperience" class="col-sm-2 control-label">访问源</label>
+                  <div class="col-sm-4">
+                    <select class="form-control">
+                      <option>wan1</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-6">
+                    <select class="form-control">
+                      <option>选择源地址对象</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputExperience" class="col-sm-2 control-label">访问目的</label>
+                  <div class="col-sm-4">
+                    <select class="form-control">
+                      <option>wan1</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-6">
+                    <select class="form-control">
+                      <option>选择目的地址对象</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">时间</label>
+                  <div class="col-sm-10">
+                    <select class="form-control">
+                      <option value="">选择时间对象</option>
+                      <option value="Load">Load</option>
+                      <option value="QTP">QTP</option>
+                      <option value="Winrunner">Winrunner</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">动作</label>
+                  <div class="col-sm-3">
+                    <select class="form-control">
+                      <option value="">接受</option>
+                      <option value="Load">Load</option>
+                      <option value="QTP">QTP</option>
+                      <option value="Winrunner">Winrunner</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="checkbox" class="modal-check"> 记录接受流量
+                  </div>
+                </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary">提交</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+
+    <!-- 路由 -->
+    <div class="modal fade" id="route" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">新建静态路由</h4>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">启用</label>
+                  <div class="col-sm-10">
+                    <input type="checkbox" class="modal-check">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail" class="col-sm-2 control-label">目的IP地址</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="srcip" placeholder="目的IP地址">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">掩码</label>
+                  <div class="col-sm-10">
+                    <select class="form-control">
+                      <option>0.0.0.0</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputExperience" class="col-sm-2 control-label">默认网关</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="srcip" placeholder="默认网关">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputSkills" class="col-sm-2 control-label">流出接口</label>
+                  <div class="col-sm-10">
+                     <select class="form-control">
+                      <option>wan 1</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary">提交</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+    <script src="/static/proj/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/proj/plugins/datatables/dataTables.bootstrap.min.js"></script>
+  </body>
+  <script>
+    // 策略之地址
+    var arr=[
+              ["all","主机","0.0.0.0","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+              ["lzp","主机","255.255.255.0","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+              ["Me","主机","10.1.1.0","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+              ["a62","主机","255.255.255.0","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+
+    ]
+    $('#address').DataTable( {
+            ordering: false,
+            data: arr,
+            ordering: false,
+            info:false,
+            searching:false,
+            columns: [
+                // { title: "编号" },
+                { title: "名称" },
+                { title: "主机" },
+                { title: "属性" },
+                { title: "操作"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+        } );
+    
+    // 策略之对象
+    var arr1=[
+                ["Load","ip","协议:1","test","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+                ["QTP","udp","端口:100-200","test","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+                ["Winrunner","icmp","类型:60  code:100","","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+    ]
+    $('#tab2').DataTable( {
+            ordering: false,
+            data: arr1,
+            ordering: false,
+            info:false,
+            searching:false,
+            columns: [
+                // { title: "编号" },
+                { title: "名称" },
+                { title: "协议" },
+                { title: "属性"},
+                { title: "描述"},
+                { title: "配置"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+        } );
+
+
+    // 策略之管理
+    var arr2=[
+                ["接受","any","lan all","wan1  all","WorkTime","启用","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+                ["接受","any","wan1  all","lan all","WorkTime","启用","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+    ]
+    $('#tab3').DataTable( {
+            ordering: false,
+            data: arr2,
+            ordering: false,
+            info:false,
+            searching:false,
+            columns: [
+                { title: "动作" },
+                { title: "服务" },
+                { title: "访问源"},
+                { title: "访问目的"},
+                { title: "时间"},
+                { title: "启用"},
+                { title: "配置"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+        } );
+
+
+    // 网络设置之静态路由
+    var arr3=[
+              ["0.0.0.0","0.0.0.0","192.168.198.253","wan1","已启用","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+              ["0.0.0.0","0.0.0.0","192.168.0.254","lan","已启用","<i class=\"fa fa-eyedropper ifir\"></i><i class=\"fa fa-remove isec\"></i>"],
+    ]
+    $('#tab4').DataTable( {
+            ordering: false,
+            data: arr3,
+            columns: [
+                { title: "目的IP" },
+                { title: "目的掩码" },
+                { title: "网关" },
+                { title: "接口"},
+                { title: "启用"},
+                { title: "操作"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+        } );
+
+    
+    // 网络设置之接口设置
+    var arr4=[
+              ["wan1","192.168.198.141","ethernet","已启用","<i class=\"fa fa-eyedropper ifir\"></i>"],
+              ["wan2","0.0.0.0","ethernet","已启用","<i class=\"fa fa-eyedropper ifir\"></i>"],
+    ]
+    $('#tab5').DataTable( {
+            ordering: false,
+            data: arr4,
+            columns: [
+                { title: "名称" },
+                { title: "IP地址" },
+                { title: "类型" },
+                { title: "启用"},
+                { title: "操作"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+        } );
+
+
+
+    // 路由
+    $("#celue_add").click(function(event) {
+      $("#celue").modal('show');
+    });
+
+    // 放火墙
+    $("#route_add").click(function(event) {
+      $("#route").modal('show');
+    });
+
+
+    //刷新页面
+    $("#refresh").click(function(event) {
+      $.ajax({ 
+          url: "/proj/pages/setting.html",
+          ype:"get",           
+          dataType:"html",
+          data: "",
+          success:function(msg){ 
+              $("#content").html(msg);
+          } 
+      })
+    });
+    </script>
+</html>

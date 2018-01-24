@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>登陆</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="/static/proj/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/proj/plugins/font-awesome-4.4.0/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/proj/dist/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/static/proj/plugins/iCheck/square/blue.css">
+    <link rel="stylesheet" href="/static/proj/dist/login/css/style.css">
+
+    <style>
+      body{
+        position: relative;
+      }
+      .login-box{
+        position: absolute;
+        left:38%;
+      }
+    </style>
+  </head>
+  <body class="hold-transition login-page">
+    <div id="particles-js">
+       <div class="login-box">
+      <div class="login-logo">
+        <a href="../../index2.html"><b>网络安全风险管控平台</b></a>
+      </div><!-- /.login-logo -->
+      <div class="login-box-body">
+        <p class="login-box-msg">用户名登陆</p>
+        <form action="" method="post">
+          <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="用户名" id="username_input">
+            <span class="fa fa-user form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="密码" id="pwd_input">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+
+          <div id="msg" style="font-size: 12px;"></div>
+
+          <div class="row">
+            <div class="col-xs-8">
+              <div class="checkbox icheck">
+                <label>
+                  <!-- <input type="checkbox"> Remember Me -->
+                </label>
+              </div>
+            </div><!-- /.col -->
+            <div class="col-xs-4">
+              <button type="button" class="btn btn-primary btn-block btn-flat" onclick="login()">登陆</button>
+
+            </div><!-- /.col -->
+          </div>
+        </form>
+
+      </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+    </div>
+
+  </body>
+  <!-- jQuery 2.1.4 -->
+    <script src="/static/proj/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="/static/proj/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/proj/dist/login/js/particles.js"></script>
+    <script src="/static/proj/dist/login/js/app.js"></script>
+    <script src="/static/proj/dist/login/js/stats.js"></script>
+
+
+
+    <script>
+      function login() {
+          $.ajax({
+              type: "POST",
+              url: "/my_authenticate/",
+              dataType: "text",
+              data: {'username': $('#username_input').val(), 'password': $('#pwd_input').val()},
+              success: function (res) {
+                  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                  if(res == '登陆成功')
+                  {
+                      window.location.href = "/"
+                  }
+                  else{
+                   $('#msg').html(res)
+                  }
+              }
+          })
+
+      }
+    </script>
+
+<script>
+
+        document.onkeydown=function(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if(e && e.keyCode==27){ // 按 Esc
+                //要做的事情
+                alert('退出？')
+              }
+             if(e && e.keyCode==13){ // enter 键
+                 //要做的事情
+                 login()
+            }
+        };
+</script>
+
+
+</html>

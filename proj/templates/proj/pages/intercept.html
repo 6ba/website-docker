@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        /*z-index: 800;*/
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+     <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+         拦截
+          <div class="pull-right" id="refresh" style="margin-right:20px;" onclick="in_route('intercept')"><i class="fa fa-refresh"></i></div>
+        </h1>
+      </section>
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- Left col -->
+          <section class="col-lg-12 connectedSortable">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+              <div class="col-lg-4 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                  <div class="inner">
+                    <h3>150<sup style="font-size: 20px">条</sup></h3>
+                    <p>已拦截</p>
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-bar-chart"></i>
+                  </div>
+                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div><!-- ./col -->
+              <div class="col-lg-4 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                  <div class="inner">
+                    <h3>13<sup style="font-size: 20px">条</sup></h3>
+                    <p>今日拦截</p>
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-pie-chart"></i>
+                  </div>
+                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div><!-- ./col -->
+              <div class="col-lg-4 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                  <div class="inner">
+                    <h3>99<sup style="font-size: 20px">天</sup></h3>
+                    <p>已保护天数</p>
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-pie-chart"></i>
+                  </div>
+                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div><!-- ./col -->
+            </div><!-- /.row -->
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="nav-tabs-custom">
+              <!-- Tabs within a box -->
+              <ul class="nav nav-tabs pull-right">
+                <li class="pull-left header"><i class="fa fa-inbox"></i> 拦截记录</li>
+              </ul>
+              <div class="tab-content">
+                <table id="logs" class="table table-bordered table-striped hover stripe"></table>
+              </div>
+            </div><!-- /.nav-tabs-custom -->
+
+          </section><!-- /.Left col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+              </div>
+              <div class="modal-body">
+                <p class="p-title">智能关联分析</p>
+                <table class="table table-bordered table-striped">
+                  <tr>
+                    <td>192.168.0.1</td>
+                    <td><button class="btn btn-primary btn-flat btn-xs">分析</button></td>
+                  </tr>
+                  <tr>
+                    <td>192.168.0.32</td>
+                    <td><button class="btn btn-primary btn-flat btn-xs">分析</button></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  <button type="button" class="btn btn-primary">提交更改</button>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+  </body>
+  <script>
+
+    var arr=[
+              ["2017/08/21","木马","发现11个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/08","蠕虫","发现2个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/10","木马","发现9个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/08/11","僵尸","发现1个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/12","木马","发现2个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/13","木马","发现5个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/14","木马","发现6个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/15","木马","发现3个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/16","木马","发现2个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/17","木马","发现1个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+              ["2017/09/18","木马","发现1个风险全部拦截","<button name=\"but\" class=\"btn btn-primary btn-flat\">分析</button>"],
+    ]
+    $('#logs').DataTable( {
+            ordering: false,
+            data: arr,
+            columns: [
+                { title: "时间" },
+                { title: "拦截类型" },
+                { title: "结果" },
+                { title: "处置分析" ,class:"but-middle"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+        } );
+
+
+    $("button[name=but]").click(function(event) {
+      $("#myModal").modal("show");
+    });
+  </script>
+</html>

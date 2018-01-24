@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge,chrome=1">
+	<meta name="viewport" content="width=1366">
+	<title>CISO</title>
+	<script src="/static/vitualdemo/js/jQuery-2.1.4.min.js"></script>
+	<script src="/static/vitualdemo/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/static/vitualdemo/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/vitualdemo/css/style.css">
+	<link rel="stylesheet" href="/static/vitualdemo/css/crso.css">
+  <script src="/static/vitualdemo/js/jquery.cookie.js"></script>
+
+
+    <script src="/static/vitualdemo/js/jtopo-0.4.8-min2.js"></script>
+</head>
+<body>
+    <div class="wrap_box">
+        <div class="header">
+           <div class="wrap_catalog_box">
+               <div class="logo">
+                  <a href="" class="logo_img">
+                     <img src="/static/vitualdemo/img/logo.png">
+                  </a>
+               </div>
+               <div class="header_tool_bar clearfix">
+                  <div class="login_wrap">
+                     <a href="" class="login_btn_wrap">
+                        <span class="login_avatar">
+                           <img src="/static/vitualdemo/img/avatar04.png" width="30" height="30">
+                        </span>
+                        <span class="login_username text_ellipsis">barbarossa</span>
+                     </a>
+                  </div>
+               </div>
+               <div class="switch_tool_bar">
+                  <a href="">学员中心</a>
+                  <a href="" class="switch_tool_left">管理中心</a>
+               </div>
+           </div>
+        </div>
+        <div class="head_nav cros">
+           <ul class="head_nav wrap_catalog_box cros head-width" style="">
+              <li class="headfirst">安全业务仿真</li>
+              <li>
+                <a href="topoControl.html" class="active">状态监测</a>
+              </li>
+              <li>
+                <a href="suspiciousState.html">告警信息</a>
+              </li>
+              <li>
+                <a href="riskReporting.html">风险汇报</a>
+              </li>
+           </ul>
+        </div>
+        <div class="page_container page-width">
+          <div class="mod-current">
+             我的课程：<span class="plr2"><a href="../enter/safetyservice.html">安全业务仿真></a></span><a href="topoControl.html">状态监测</a>
+             <a href="../enter/safetyservice.html"> <span class="span">返回课程首页>></span></a>
+          </div>
+          <div class="topocontrol" style="width:1250px">
+            <center id="content">
+              <canvas width="1250px" height="737px" id="canvas" style="background-color:#fff; border:1px solid #444;">
+            </canvas>
+          </center>
+	        </div>
+        </div>
+    </div>
+</body>
+
+ <!--<script src="/static/vitualdemo/js/topo_index.js"></script>-->
+<script src="/static/vitualdemo/js/own_js.js"></script>
+</html>

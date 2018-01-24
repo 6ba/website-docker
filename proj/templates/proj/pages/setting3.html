@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="Cache-Control" content="max-age=28800000" />
+   <!--<link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">-->
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        z-index: 800;
+      }
+      .ifir{
+        color: #3c8dbc;
+      }
+      .isec{
+        color: #dd4b39;
+        margin-left: 10px;
+      }
+      thead{
+        font-weight: 700;
+      }
+      .nav-tabs li a{
+        font-size: 20px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+     <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+         用户管理
+          <div class="pull-right" id="refresh" style="margin-right:20px;" onclick="in_route('setting3')"><i class="fa fa-refresh"></i></div>
+        </h1>
+
+      </section>
+
+       <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Custom Tabs -->
+            <div class="nav-tabs-custom">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">用户记录</a></li>
+                <li><a href="#tab_2" data-toggle="tab">用户账号</a></li>
+                <!-- <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                  <div class="tab-content tab-hight1">
+                    <table id="address" class="table table-bordered table-striped"></table>
+                  </div>
+                </div><!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+                  <table class="table table-bordered table-striped" id="user_set">
+
+                  </table>
+                  <div class="box-footer clearfix no-border" id="add_user_modal">
+                    <button class="btn btn-default pull-right" id="user_add"><i class="fa fa-plus"></i>增加用户</button>
+                  </div>
+                </div><!-- /.tab-pane -->
+              </div><!-- /.tab-content -->
+            </div><!-- nav-tabs-custom -->
+          </div><!-- /.col -->
+        </div>
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+
+    <!-- modal_tab2 -->
+    <div class="modal fade" id="modal_tab2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" >
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">增加用户</h4>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label" >用户名</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_username">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label" >角色</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" id="input_role">
+                      <option value="网络管理员">网络管理员</option>
+                      <option value="安全主管">安全主管</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">密码</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="input_password">
+                  </div>
+                </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick = "user_modify_commit()">提交</button>
+              <script>
+                function user_modify_commit() {
+                    $("#modal_tab2").modal("hide");
+                    $.ajax({
+                      type: "POST",
+                      url: "/proj/add_user/",
+                      dataType: "text",
+                      data: {"username": $("#input_username").val(),
+                          "password": $("#input_password").val(),
+                          "role": $("#input_role").val()},
+                      success: function (res) {
+                          //console.log(res)
+                          // 这里inrote清空 监听的 event事件，所以不用设置 tag
+                          in_route("setting3", {})
+                          //$("#modal_tab2").modal("hide");
+                      }
+                  })
+                }
+
+              </script>
+
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+      <script>
+                    function modify_user(user_id) {
+            $.ajax({
+              type: "GET",
+              url: "/proj/modify_user/?user_id="+user_id,
+              dataType: "json",
+              success: function (res) {
+                  $("#input_username").val(res["username"]);
+                  $("#input_password").val(res["password"]);
+                  $("#input_role").val(res["role"]);
+                  $("#modal_tab2").modal("show");
+              }
+            })
+          }
+
+          function delete_user(user_id) {
+              var msg = "您真的确定要删除吗？";
+               if (confirm(msg)==true){
+                   $.ajax({
+                        type: "GET",
+                        url: "/proj/delete_user/?user_id="+user_id,
+                        dataType: "json",
+                        success: function (res) {
+                            console.log('have_deleted!')
+                        }
+                   })
+                    in_route("setting3", {})
+               }
+
+          }
+
+      </script>
+
+
+    </div>
+  </body>
+  <script>
+
+  $.ajax({
+      type: "GET",
+      url: "/proj/list_all_users/",
+      dataType: "json",
+      success: function (res) {
+
+          var address = $('#address').DataTable({
+              ordering: false,
+              data: res.res_user_records,
+              ordering: false,
+              info: false,
+              searching: false,
+              columns: [
+                  // { title: "编号" },
+                  {title: "用户名"},
+                  {title: "角色"},
+                  {title: "加入"},
+                  {title: "上次登录"},
+                  // { title: "操作"},
+              ],
+              oLanguage: {
+                  "sProcessing": "正在加载中......",
+                  "sLengthMenu": "每页显示 _MENU_ 条记录",
+                  "sZeroRecords": "没有数据！",
+                  "sEmptyTable": "表中无数据存在！",
+                  "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                  "sInfoEmpty": "显示0到0条记录",
+                  "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                  "sSearch": "搜索",
+                  "oPaginate": {
+                      "sFirst": "首页",
+                      "sPrevious": "上一页",
+                      "sNext": "下一页",
+                      "sLast": "末页"
+                  }
+              }
+          });
+
+          var user_set = $('#user_set').DataTable({
+              ordering: false,
+              data: res.res_user_lists,
+              ordering: false,
+              info: false,
+              searching: false,
+              paging: false,
+              columns: [
+                  {title: "用户名"},
+                  {title: "角色"},
+                  {title: " "},
+              ],
+              oLanguage: {
+                  "sProcessing": "正在加载中......",
+                  "sLengthMenu": "每页显示 _MENU_ 条记录",
+                  "sZeroRecords": "没有数据！",
+                  "sEmptyTable": "表中无数据存在！",
+                  "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                  "sInfoEmpty": "显示0到0条记录",
+                  "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                  "sSearch": "搜索",
+                  "oPaginate": {
+                      "sFirst": "首页",
+                      "sPrevious": "上一页",
+                      "sNext": "下一页",
+                      "sLast": "末页"
+                  }
+              }
+          });
+
+
+          // 用户管理
+          $("#user_add").click(function (event) {
+              $("#myModalLabel").text("增加用户");
+              $("#modal_tab2").modal("show");
+          });
+
+          // // 用户修改
+          // $(".ifir").click(function (event) {
+          //     $("#myModalLabel").text("修改用户");
+          //     $("#modal_tab2").modal("show");
+          //     var row = user_set.row($(this).closest('tr')).data();
+          //     $("#tab1_input4").val(row[0]);
+          //     $("#tab1_input5").val(row[1]);
+          // });
+      }
+  })
+
+    </script>
+<script>
+          // 判断是不是网络管理员, 如果是
+          $.ajax({
+              type: "GET",
+              url: "/proj/sure_is_level0_user/",
+              dataType: "text",
+              success: function (res) {
+                  if (parseInt(res) == 0){
+                      console.log("!!!!!")
+                      // $("#modal_tab2").text("")
+                      // $("#add_user_modal").text("")
+
+
+
+                  }
+              }
+            })
+
+</script>
+
+
+</html>

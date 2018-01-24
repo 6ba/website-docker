@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="Cache-Control" content="max-age=28800000" />
+   <link rel="stylesheet" href="/static/proj/plugins/datatables/dataTables.bootstrap.css">
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        z-index: 800;
+      }
+      .ifir{
+        color: #3c8dbc;
+      }
+      .isec{
+        color: #dd4b39;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+     <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+         诊断工具
+           <div class="pull-right" id="refresh" style="margin-right:20px;" onclick="in_route('setting1')"><i class="fa fa-refresh"></i></div>
+        </h1>
+        
+      </section>
+
+       <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">诊断工具</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body ">
+                  <!-- form start -->
+                  <form class="form-horizontal">
+                    <div class="form-group" id="redio_p">
+                      <label for="inputEmail3" class="col-sm-2 control-label">诊断工具类型</label>
+                      <div class="col-sm-2" style="margin-top:6px;">
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked style="margin-right:5px;">PING通信检测
+                      </div>
+                      <div class="col-sm-2" style="margin-top:6px;">
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="margin-right:5px;">路由跟踪检测
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-2 control-label">目的IP/域名</label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control" id="inputEmail1" placeholder="目的IP/域名">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputPassword3" class="col-sm-2 control-label">出接口</label>
+                      <div class="col-sm-5">
+                        <select class="form-control" id="inputEmail1">
+                          <option>---</option>
+                          <option>option 2</option>
+                          <option>option 3</option>
+                          <option>option 4</option>
+                          <option>option 5</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group" id="group1">
+                      <label for="inputEmail3" class="col-sm-2 control-label">PING次数</label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control" id="inputEmail3" placeholder="PING次数">
+                      </div>
+                    </div>
+                    <div class="form-group" id="group2">
+                      <label for="inputEmail3" class="col-sm-2 control-label">PING数据包大小</label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control" id="inputEmail4" placeholder="PING数据包大小">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-2 control-label"><button class="btn btn-primary">开始</button></label>
+                    </div>
+                  </from>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-1 control-label"></label>
+                    <div class="col-sm-7">
+                      <textarea class="form-control" rows="5" placeholder="Enter ..."></textarea>
+                    </div>
+                  </div>
+                  </from>
+              </div><!-- /.box-body -->
+            </div><!-- /. box -->
+          </div>
+        </div>
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+  </body>
+  <script>
+    // 路由跟踪
+    $("input[name=optionsRadios]").change(function(){
+      var va = $("input[name=optionsRadios]:checked").val();
+          if(va =="option2"){
+            $("#group1").hide();
+            $("#group2").hide();
+          }else{
+            $("#group1").show();
+            $("#group2").show();
+          }
+    });
+    
+  </script>
+</html>

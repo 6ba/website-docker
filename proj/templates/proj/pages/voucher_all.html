@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- <meta http-equiv="Cache-Control" content="max-age=7200" /> -->
+   <!--  <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script> -->
+    <!-- <script src="../dist/js/echarts.js"></script> -->
+    <style>
+      .nav-tabs>li>a{
+        color:#444;
+        font-weight: 700;
+      }
+      .nav-tabs>li.active>a{
+        color:#357ca5;
+      }
+    </style>
+  </head>
+  <body>
+        <!-- Main row -->
+        <div class="row">
+          <!-- Left col -->
+          <section class="col-lg-6 connectedSortable">
+            <!-- general form elements -->
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">IPin历史记录</h3>
+              </div><!-- /.box-header -->
+              <div class="box-header with-border">
+                 <div class="row">
+                    <div class="col-sm-6 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17M</span>
+                        <h5 class="description-header">出</h5>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-yellow"><i class="fa fa-caret-down"></i>13M</span>
+                        <h5 class="description-header">入</h5>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-sm-7 col-xs-7">
+                    <div id="chart1" style="width:100%;height:300px;"></div>
+                  </div>
+                  <div class="col-sm-5 col-xs-5">
+                    <div id="chart2" style="width:100%;height:300px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /.box -->
+          </section><!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-6 connectedSortable">
+             <!-- general form elements -->
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">告警24小时IP记录</h3>
+              </div><!-- /.box-header -->
+              <div class="box-header with-border">
+                 <div class="row">
+                    <div class="col-sm-6 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17M</span>
+                        <h5 class="description-header">出</h5>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-6">
+                      <div class="description-block border-right">
+                        <span class="description-percentage text-yellow"><i class="fa fa-caret-down"></i>13M</span>
+                        <h5 class="description-header">入</h5>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-sm-7 col-xs-7">
+                    <div id="chart3" style="width:100%;height:300px;"></div>
+                  </div>
+                  <div class="col-sm-5 col-xs-5">
+                    <div id="chart4" style="width:100%;height:300px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /.box -->
+          </section><!-- right col -->
+        </div><!-- /.row (main row) -->
+        <div class="row">
+          <div class="col-lg-12">
+              <!-- general form elements -->
+            <div class="box box-infp">
+              <div class="box-header with-border">
+                <h3 class="box-title">历史链接记录</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <div id="chart5" style="width:100%;height:300px;"></div>
+              </div>
+            </div><!-- /.box -->
+          </div>
+        </div>
+         <!-- Main row -->
+        <div class="row">
+          <!-- Left col -->
+          <section class="col-lg-6 connectedSortable">
+            <!-- general form elements -->
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">敏感数据</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body tab-hight">
+                <table id="minggan" class="table table-bordered table-striped "></table>
+              </div>
+            </div><!-- /.box -->
+          </section><!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-6 connectedSortable">
+             <!-- general form elements -->
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">历史预警</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body tab-hight">
+                 <table id="logs" class="table table-bordered table-striped"></table>
+              </div>
+            </div><!-- /.box -->
+          </section><!-- right col -->
+        </div><!-- /.row (main row) -->
+  </body>
+  <script> 
+
+    // chart1
+    var myChart = echarts.init(document.getElementById('chart1'));
+      option = {
+          color: ['#3398DB'],
+          tooltip : {
+              trigger: 'axis',
+              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+              }
+          },
+          grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+          },
+          xAxis : [
+              {
+                  type : 'category',
+                  data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                  axisTick: {
+                      alignWithLabel: true
+                  }
+              }
+          ],
+          yAxis : [
+              {
+                  type : 'value'
+              }
+          ],
+          series : [
+              {
+                  name:'直接访问',
+                  type:'bar',
+                  barWidth: '60%',
+                  data:[10, 52, 200, 334, 390, 330, 220]
+              }
+          ]
+      };
+
+    myChart.setOption(option);
+
+   
+    // chart2
+    var myChart = echarts.init(document.getElementById('chart2'));
+      option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+            data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        },
+        series: [
+            {
+                name:'访问来源',
+                type:'pie',
+                radius: ['50%', '70%'],
+                center: ['60%', '60%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:[
+                    {value:335, name:'直接访问'},
+                    {value:310, name:'邮件营销'},
+                    {value:234, name:'联盟广告'},
+                    {value:135, name:'视频广告'},
+                    {value:1548, name:'搜索引擎'}
+                ]
+            }
+        ]
+      };
+
+
+    myChart.setOption(option);
+
+    // chart3
+    var myChart = echarts.init(document.getElementById('chart3'));
+      option = {
+          color: ['#3398DB'],
+          tooltip : {
+              trigger: 'axis',
+              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+              }
+          },
+          grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+          },
+          xAxis : [
+              {
+                  type : 'category',
+                  data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                  axisTick: {
+                      alignWithLabel: true
+                  }
+              }
+          ],
+          yAxis : [
+              {
+                  type : 'value'
+              }
+          ],
+          series : [
+              {
+                  name:'直接访问',
+                  type:'bar',
+                  barWidth: '60%',
+                  data:[10, 52, 200, 334, 390, 330, 220]
+              }
+          ]
+      };
+
+    myChart.setOption(option);
+
+   
+    // chart4
+    var myChart = echarts.init(document.getElementById('chart4'));
+      option = {
+          tooltip: {
+              trigger: 'item',
+              formatter: "{a} <br/>{b}: {c} ({d}%)"
+          },
+          legend: {
+              orient: 'vertical',
+              x: 'left',
+              data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+          },
+          series: [
+              {
+                  name:'访问来源',
+                  type:'pie',
+                  radius: ['50%', '70%'],
+                  center: ['60%', '60%'],
+                  avoidLabelOverlap: false,
+                  label: {
+                      normal: {
+                          show: false,
+                          position: 'center'
+                      },
+                      emphasis: {
+                          show: true,
+                          textStyle: {
+                              fontSize: '30',
+                              fontWeight: 'bold'
+                          }
+                      }
+                  },
+                  labelLine: {
+                      normal: {
+                          show: false
+                      }
+                  },
+                  data:[
+                      {value:335, name:'直接访问'},
+                      {value:310, name:'邮件营销'},
+                      {value:234, name:'联盟广告'},
+                      {value:135, name:'视频广告'},
+                      {value:1548, name:'搜索引擎'}
+                  ]
+              }
+          ]
+      };
+
+    myChart.setOption(option);
+
+
+    // chart5
+    var myChart = echarts.init(document.getElementById('chart5'));
+      option = {
+          color: ['#3398DB'],
+          tooltip : {
+              trigger: 'axis',
+              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+              }
+          },
+          grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+          },
+          xAxis : [
+              {
+                  type : 'category',
+                  data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+                           'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                  axisTick: {
+                      alignWithLabel: true
+                  }
+              }
+          ],
+          yAxis : [
+              {
+                  type : 'value'
+              }
+          ],
+          series : [
+              {
+                  name:'直接访问',
+                  type:'bar',
+                  barWidth: '60%',
+                  data:[10, 52, 200, 334, 390, 330, 220,10, 52, 200, 334, 390, 330, 220]
+              }
+          ]
+      };
+
+    myChart.setOption(option);
+
+
+     // 历史记录
+    var arr=[
+              ["2017/08/21","交通","192.168.36.3","192.36.53.98","445"],
+              ["2017/09/08","交通","192.5.6.3","192.5.3.6","223"],
+              ["2017/09/10","交通","187.23.45.6","136.3.6.9","8808"],
+              ["2017/09/10","交通","187.23.45.6","136.3.6.9","8808"],
+              ["2017/09/12","交通","192.168.0.1","187.23.45.6","112"],
+              ["2017/09/12","交通","192.168.0.1","187.23.45.6","112"],
+              ["2017/09/14","交通","192.168.0.1","187.23.45.6","224"],
+              ["2017/09/15","交通","192.168.0.1","187.23.45.6","1120"],
+    ]
+    $('#logs').DataTable( {
+            ordering: false,
+            data: arr,
+            columns: [
+                { title: "时间" },
+                { title: "数据类型" },
+                { title: "泄漏源" },
+                { title: "流向IP"},
+                { title: "端口"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+        } );
+
+
+    // 敏感数据
+    var arr1=[
+              ["2017/08/21","交通","192.168.36.3","192.36.53.98","445"],
+              ["2017/09/08","交通","192.5.6.3","192.5.3.6","223"],
+              ["2017/09/10","交通","187.23.45.6","136.3.6.9","8808"],
+              ["2017/08/11","交通","192.168.0.1","187.23.45.6","443"],
+              ["2017/09/12","交通","192.168.0.1","187.23.45.6","112"],
+              ["2017/09/13","交通","192.168.0.1","187.23.45.6","556"],
+              ["2017/09/14","交通","192.168.0.1","187.23.45.6","224"],
+              ["2017/09/15","交通","192.168.0.1","187.23.45.6","1120"],
+              ["2017/09/16","交通","192.168.0.1","187.23.45.6","554"],
+              ["2017/09/17","交通","192.168.0.1","187.23.45.6","1125"],
+              ["2017/09/18","交通","192.168.0.1","187.23.45.6","557"],
+    ]
+    $('#minggan').DataTable( {
+            ordering: false,
+            data: arr1,
+            columns: [
+                { title: "时间" },
+                { title: "数据类型" },
+                { title: "泄漏源" },
+                { title: "流向IP"},
+                { title: "端口"},
+            ],
+            oLanguage : {
+                    "sProcessing" : "正在加载中......",
+                    "sLengthMenu" : "每页显示 _MENU_ 条记录",
+                    "sZeroRecords" : "没有数据！",
+                    "sEmptyTable" : "表中无数据存在！",
+                    "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoEmpty" : "显示0到0条记录",
+                    "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+                    "sSearch" : "搜索",
+                    "oPaginate" : {
+                        "sFirst" : "首页",
+                        "sPrevious" : "上一页",
+                        "sNext" : "下一页",
+                        "sLast" : "末页"
+                    }
+                }
+        } );
+
+    
+    //返回上一页
+    $("#return").click(function(event) {
+      in_route(parames);
+    });
+  </script>
+  
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- <meta http-equiv="Cache-Control" content="max-age=7200" /> -->
+    <script src='../dist/js/timeline.js'></script>
+    <link rel="stylesheet" href="../dist/css/timeline.css">
+    <link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"></script>
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        z-index: 800;
+      }
+      .filling_line{
+        transform:scaleX(0.0);
+      }
+
+      h4{
+        font-weight: 600;
+        font-size: 24px;
+      }
+      h5{
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+      h5 i{
+        margin-right: 5px;
+      }
+      .h-label{
+        font-weight: 150;
+        font-size: 18px;
+        word-wrap : break-word;
+        word-break:break-all;
+        text-indent:20px;
+        padding: 0px 15px;
+      }
+      table{
+        font-size: 16px;
+        text-align: center;
+      }
+      thead{
+        font-weight: 700;
+      }
+      .font-color{
+        /*color: #000!important;*/
+      }
+      .padd-left{
+        padding-left:5px !important;
+      }
+      .padd-right{
+        padding-right:5px !important;
+      }
+      .red{
+        color:red;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+     <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="row">
+          <div class="col-xs-1 com-lg-1" id="return">
+            <button class="btn btn-tool btn-lg"><i class="fa fa-mail-reply"></i></button>
+          </div>
+          <div class="col-xs-8 col-lg-10">
+            <h2  style="margin-top:0px;">详情</h2>
+          </div>
+          <div class="col-xs-1 col-lg-1">
+            <button class="btn btn-tool btn-lg" onclick="in_route('warningdetail')"><i class="fa fa-refresh"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- Left col -->
+          <section class="col-lg-7 connectedSortable">
+           <!-- small box -->
+            <!-- <div class="small-box bg-red">
+              <div class="inner">
+                <h4>mysql服务器：192.168.0.5 A区  2017-11.11:15:30</h4>
+              </div>
+            </div> -->
+            <div class="box box-solid">
+              <div class="box-header with-border">
+                <i class="fa fa-inbox"></i>
+                <h3 class="box-title">告警详情</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body row">
+                <div class="col-md-12">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <td>告警位置</td>
+                        <td>所属区域</td>
+                        <td>IP</td>
+                        <td>时间</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>服务器区</td>
+                        <td>A区</td>
+                        <td>192.168.0.5</td>
+                        <td>2017-11-22 11:15:30</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div><!-- /.box-body-->
+            </div>
+            <div class="row font-color">
+              <div class="col-md-4 padd-right">
+                <div class="box box-solid bg-red-gradient">
+                  <div class="box-body row tab-hight4">
+                    <div class="col-xs-12 tab-hight4" style="border-right: 1px solid #f4f4f4">
+                      <h5 class="text-center font-color"><i class="fa fa-hourglass"></i>威胁信息</h5>
+                      <div class="h-label font-color">src:47.52.140.157, dst:221.232.138.204, sqlinjection, url:http://www.hbeducloud.com/s/app/data.php</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.box-body-->
+                </div>
+              </div>
+              <div class="col-md-4 padd-left padd-right">
+                <div class="box box-solid bg-yellow-gradient">
+                  <div class="box-body row tab-hight4">
+                    <div class="col-xs-12 tab-hight4" style="border-right: 1px solid #f4f4f4">
+                      <h5 class="text-center font-color"><i class="fa fa-bullhorn"></i>可能危害</h5>
+                      <div class="h-label font-color">2017-11.11:15:30, src:47.52.140.157, dst:221.232.138.204, sqlinjection, url:http://www.hbeducloud.com/s/app/data.php</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.box-body-->
+                </div>
+              </div>
+              <div class="col-md-4 padd-left">
+                <div class="box box-solid bg-light-blue-gradient">
+                  <div class="box-body row tab-hight4">
+                    <div class="col-xs-12 tab-hight4">
+                      <h5 class="text-center font-color"><i class="fa fa-calendar"></i>处置建议</h5>
+                      <div class="h-label font-color">2017-11.11:15:30, src:47.52.140.157, dst:221.232.138.204, sqlinjection, url:http://www.hbeducloud.com/s/app/data.php</div>
+                    </div><!-- ./col -->
+                  </div><!-- /.box-body-->
+                </div>
+              </div>
+            </div><!-- /.row -->
+            <div class="row">
+              <div class="col-md-12">
+                <!-- 处置建议 -->
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">处置建议</h3>
+                  </div><!-- /.box-header -->
+                  <div class="box-body">
+                    <div>
+                      <div class="form-group">
+                      <label>处置</label>
+                      <textarea class="form-control" rows="3" placeholder="请输入建议 ..."></textarea>
+                      </div>
+                      <div class="form-group">
+                        <button class="btn btn-default" id="submail"><i class="fa fa-envelope-o"></i>寻求帮助</button>
+                        <div class="pull-right">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-pencil"></i> 提交</button>
+                      </div>
+                    </div>
+                    <div id="mail">
+                      <div class="form-group">
+                        <input class="form-control" placeholder="收件人:">
+                      </div>
+                      <div class="form-group">
+                        <textarea id="compose-textarea" class="form-control" style="height: 300px">
+                        </textarea>
+                      </div>
+                      <div class="form-group pull-right">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> 发送</button>
+                      </div>
+                    </div>
+                  </div><!-- /.box-body -->
+                </div><!-- /. box -->
+              </div>
+            </div>
+          </section><!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-5 connectedSortable">
+            <!-- 水平时间轴 -->
+            <div class="box box-danger">
+              <div class="box-header with-border">
+                <i class="fa fa-warning"></i>
+                <h3 class="box-title">预警处置</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <div class="time_line_box">
+                 <div class="time_line" style="width:100%;">
+                  <div class="time_line_background" style="transform:scaleX(0.97); ">
+                    <span class="filling_line"></span>
+                    <ol  class="ol">
+                      <li><a   class="order_item" style="left:0%;"></a></li>
+                      <li><div class="order_item" style="left:32%;"></div></li>
+                      <li><div   class="order_item" style="left:65%;"></div></li>
+                      <li><div  class="order_item" style="left:96%;"></div></li>
+                    </ol>
+                  </div>
+                  <ol>
+                    <li><a  class="text_item"  style="left:-2%;">告警</a></li>
+                    <li><a  class="text_item"  style="left:28%;">签收</a></li>
+                    <li><a  class="text_item"  style="left:60%;">处置</a></li>
+                    <li><a  class="text_item"  style="left:88%;">完成</a></li>
+                  </ol>
+                 </div>
+                </div>
+              </div><!-- /.box-body -->
+              <div class="box-footer text-center">
+                <div class="pull-right">
+                  <button class="btn btn-warning btn-flat">忽略本事件</button>
+                  <button class="btn btn-primary btn-flat" style="margin-left:5px;">处理完成</button>
+                </div>
+              </div>
+            </div><!-- /.box -->
+            <!-- 垂直时间轴 处置详情 -->
+            <div class="box box-success">
+              <div class="box-header with-border">
+                <i class="fa fa-inbox"></i>
+                <h3 class="box-title">预警处置详情</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <ul class="timeline">
+                  <!-- timeline time label -->
+                  <li class="time-label">
+                    <span class="bg-green">
+                      2017年11月10日
+                    </span>
+                  </li>
+                  <!-- /.timeline-label -->
+                  <!-- timeline item -->
+                  <li>
+                    <i class="fa bg-aqua"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+                      <h3 class="timeline-header"><a href="#">系统告警</a></h3>
+                      <div class="timeline-body">
+                        47.52.141.11向221.232.128.103跨域攻击
+                      </div>
+                    </div>
+                  </li>
+                  <!-- END timeline item -->
+                  <!-- timeline item -->
+                   <li>
+                    <i class="fa bg-aqua"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 13:01</span>
+                      <h3 class="timeline-header no-border"><a href="#">安全主管</a> </h3>
+                      <div class="timeline-body">
+                        lidaxiao:提醒网络管理员处理
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fa bg-aqua"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 13:01</span>
+                      <h3 class="timeline-header no-border"><a href="#">网络管理员</a> </h3>
+                      <div class="timeline-body">
+                        zhangwei  签收
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fa bg-aqua"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 13:11</span>
+                      <h3 class="timeline-header no-border"><a href="#">网络管理员</a> </h3>
+                      <div class="timeline-body">
+                        zhangwei:向技术支持寻求帮助
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fa bg-aqua"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> 13:40</span>
+                      <h3 class="timeline-header no-border"><a href="#">技术支持</a> </h3>
+                      <div class="timeline-body">
+                        技术支持:(1)验证HTTP Referer字段；(2)在请求地址中添加 token 并验证；(3)在HTTP头中自定义属性并验证。
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                  </li>
+                </ul>
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+          </section><!-- right col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+    <!-- <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script> -->
+  </body>
+  <script>
+
+    $("#mail").hide();
+    $("#submail").click(function(event) {
+      $("#mail").slideDown('10', function() {
+
+      });
+    });
+    run(0);
+    run(1);
+      // $(function () {
+        //Add text editor
+        $("#compose-textarea").wysihtml5();
+      // });
+
+
+    // var parames_d=["warningdetail","192.168.0.0"]
+    // 分析跳转
+    // $("button[name=detail]").click(function(event) {
+    //     in_route("voucher",parames_d)
+    // });
+
+    console.log(parames);
+    // 返回上一页
+     $("#return").click(function(event) {
+        in_route(parames);
+    })
+  </script>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jtopo测试页面</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
+     <!-- 右测栏目 Jtopo--> <!-- <link rel="stylesheet" type="text/css" href="/static/jtopot/css/base.css">-->
+   <script src="/static/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!--
+    <script src="/static/jtopot/js/tools/js/jtopo-0.4.8-min.js" type="text/javascript"></script>
+    -->
+    <script type="text/javascript" src="/static/jtopot/js/jtopo-min.js"></script>
+    <script src="/static/jtopot/js/tools/js/toolbar.js" type="text/javascript"></script>
+    <script src="/static/jtopot/js/tools/js/jquery.toolbar.js" type="text/javascript"></script>
+    <script src="/static/jtopot/js/tools/js/jquery.snippet.min.js" type="text/javascript"></script>
+    <script src="/static/jtopot/js/tools/js/func.js" type="text/javascript"></script>
+
+
+    <!-- 模态框依赖脚本 -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body width="100%" height="100%">
+<style>
+
+    #dosomething {
+            width:122px;
+            border: 1px solid #aaa;
+            border-radius:7px;
+            border-bottom: 0;
+            background: #eee;
+            position: absolute;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: none;
+            box-shadow: 0 0 5px #434343;
+        }
+        #dosomething li{
+            width:122px;
+            position:relative;
+        }
+
+        #dosomething li a {
+            height:30px;
+            line-height: 30px;
+            width:100px;
+            margin-left: 11px;
+            text-align: center;
+            display: block;
+            border-bottom: 1px solid #aaa;
+            cursor: pointer;
+        }
+    </style>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+
+
+<div class="row">
+    <div id="content" class="col-md-12">
+            <canvas id="canvas" width="100%" height="100%"></canvas>
+    </div>
+</div>
+
+     <script id='code' src="/static/jtopot/js/show_second_page.js"></script>
+
+
+<ul id="dosomething">
+    <li><a>添加设备</a></li>
+    <li><a>做其他事儿</a></li>
+     <li><a>取消</a></li>
+</ul>
+</body>
+</html>

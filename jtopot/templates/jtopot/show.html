@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jtopo测试页面</title>
+
+   <script src="/static/proj/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="/static/jtopot/js/jtopo-min.js"></script>
+
+</head>
+<body width="100%" height="100%">
+<div id="jtopo">
+    <style>
+        .dialog{
+            width: 240px;
+            max-height:400px;
+            /*min-height: 165px;*/
+            border: 1px solid #8E8E8F;
+            border-radius: 3px;
+            box-shadow: 4px 4px 3px rgba(20%,20%,40%,0.5);
+            position: absolute;
+            background-color: white;
+            padding: 10px;
+            overflow: auto;
+            z-index: 99;
+        }
+        .dialog h5{
+          font-weight: 700;
+          font-size: 16px;
+          margin-left: 5px;
+        }
+        .dialog span{
+          margin-left: 5px;
+          margin-right: 5px;
+        }
+
+    </style>
+    <div id="dialog" class="dialog" style="display: none;">
+  <h5>安全隐患</h5>
+  <table class="table table-bordered table-striped">
+    <tbody>
+      <tr>
+        <td class="td1">漏洞1</td>
+        <td class="td2">xxxxxxxx漏洞</td>
+      </tr>
+      <tr>
+        <td class="td1">漏洞2</td>
+        <td class="td2">xxxxxxxx漏洞</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5>攻击威胁</h5>
+  <p><span>攻击威胁</span>---<span>sql注入攻击</span></p >
+</div>
+
+             <style>
+
+        #opreate_menu {
+            width:122px;
+            border: 1px solid #aaa;
+            border-radius:7px;
+            border-bottom: 0;
+            background: #eee;
+            position: absolute;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: none;
+            box-shadow: 0 0 5px #434343;
+        }
+        #opreate_menu li{
+            width:122px;
+            position:relative;
+        }
+
+        #opreate_menu li a {
+            height:30px;
+            line-height: 30px;
+            width:100px;
+            margin-left: 11px;
+            text-align: center;
+            display: block;
+            border-bottom: 1px solid #aaa;
+            cursor: pointer;
+        }
+    </style>
+
+
+    <ul id="opreate_menu">
+      <li><a>增加设备</a></li>
+        <li><a>删除设备</a></li>
+        <li><a>修改设备</a></li>
+         <li><a>取消</a></li>
+    </ul>
+
+
+
+        <div id="contentc" class="col-md-12">
+                <canvas id="canvas" width="100%" height="100%"></canvas>
+            <script  src="/static/jtopot/own_jtopo/local_index.js"></script>
+            <script  src="/static/jtopot/own_jtopo/local_page_zl.js"></script>
+        </div>
+
+</div>
+</body>
+</html>

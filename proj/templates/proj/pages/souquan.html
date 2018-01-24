@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据泄露</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- <meta http-equiv="Cache-Control" content="max-age=28800000" /> -->
+    <link rel="stylesheet" href="/static/proj/plugins/datatimepicker/css/bootstrap-datetimepicker.min.css">
+    <style>
+      body{
+        min-height: 100%;
+        background-color: #ecf0f5;
+        z-index: 800;
+      }
+      td:first-child{
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+         授权信息
+          <div class="pull-right" id="refresh" style="margin-right:20px;" onclick="in_route('souquan', {})"><i class="fa fa-refresh"></i></div>
+        </h1>
+
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- left col-->
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">授权信息</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body ">
+                <div class="tab-content">
+                  <table id="logs" class="table table-bordered table-striped">
+                    <tr>
+                      <td>序列号</td>
+                      <td>bj76hb6gsfxbf987899</td>
+                    </tr>
+                    <tr>
+                      <td>版本类型</td>
+                      <td>正式版</td>
+                    </tr>
+                    <tr>
+                      <td>有效期</td>
+                      <td>永久</td>
+                    </tr>
+                    <tr>
+                      <td>公司名称</td>
+                      <td>武汉楚云安网络科技有限公司</td>
+                    </tr>
+                    <!-- <tr>
+                      <td>电子邮件</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>联系电话</td>
+                      <td></td>
+                    </tr> -->
+                  </table>
+                </div>
+              </div><!-- /.box-body -->
+            </div><!-- /. box -->
+          </div><!-- /.col -->
+           <!-- left col-->
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">许可证文件</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body ">
+                <div class="row">
+                  <div class="col-sm-1 com-xs-1"></div>
+                  <div class="col-sm-10 col-xs-10">
+                    <div class="form-group">
+                      <input type="file" id="exampleInputFile">
+                      <p class="help-block">*请选择有效期内的许可证文件</p>
+                    </div>
+                  </div>
+                </div>
+               
+              </div><!-- /.box-body -->
+            </div><!-- /. box -->
+          </div><!-- /.col -->
+        </div><!-- /.row (main row) -->
+
+      </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+    
+  </body>
+  <script>
+  </script>
+</html>
